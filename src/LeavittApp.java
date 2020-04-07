@@ -2,8 +2,6 @@
  *  @date	3/30/2020
  */
 
-// test 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
