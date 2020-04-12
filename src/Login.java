@@ -1,7 +1,10 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class Login implements ActionListener{
 	
@@ -25,34 +30,52 @@ public class Login implements ActionListener{
 		
 		frame = new JFrame();
 		panel = new JPanel();
-		frame.setSize(300,180);
+		frame.setSize(500,240);
 		frame.add(panel);
 		
 		panel.setLayout(null);
+		panel.setBounds(0,0,500,240);
+		panel.setBackground(Color.WHITE);
+		
+      	try {
+      		BufferedImage logoS = ImageIO.read(new File("src/Leavitt-Just-Logo.png"));
+      		JLabel logoLabel = new JLabel(new ImageIcon(logoS));
+      		logoLabel.setBounds(10,10,180,190);
+      		panel.add(logoLabel);
+      	}
+      	catch (Exception e){
+      		System.out.println(e);
+      	}
 		
 		userLabel = new JLabel("Username");
-		userLabel.setBounds(10, 20, 80, 25);
+		userLabel.setBounds(210, 30, 80, 30);
+		userLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
+		userLabel.setForeground(new Color(0, 74, 148));
 		panel.add(userLabel);
 		
 		userText = new JTextField(20);
-		userText.setBounds(100,20,165,25);
+		userText.setBounds(300,30,165,30);
 		panel.add(userText);
 		
 		passwordLabel = new JLabel("Password");
-		passwordLabel.setBounds(10,50,80,25);
+		passwordLabel.setBounds(210,70,80,30);
+		passwordLabel.setFont(new Font("Verdana", Font.PLAIN, 14));
+		passwordLabel.setForeground(new Color(0, 74, 148));
 		panel.add(passwordLabel);
 		
 		passwordText = new JPasswordField();
-		passwordText.setBounds(100,50,165,25);
+		passwordText.setBounds(300,70,165,30);
 		panel.add(passwordText);
 		
 		logButton = new JButton("Login");
-		logButton.setBounds(185,90,80,25);
+		logButton.setBounds(385,120,80,40);
+		logButton.setBackground(new Color(0, 74, 148));
+		logButton.setForeground(Color.WHITE);
 		logButton.addActionListener(new Login());
 		panel.add(logButton);
 		
 		denied = new JLabel("");
-		denied.setBounds(40,90,100,25);
+		denied.setBounds(230,125,100,30);
 		denied.setForeground(Color.RED);
 		panel.add(denied);
 
@@ -63,10 +86,11 @@ public class Login implements ActionListener{
 		
 		frame.setVisible(true);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String user = userText.getText();
+		@SuppressWarnings("deprecation")
 		String password = passwordText.getText();
 		if(!user.equals("admin") || !password.equals("pass")) {
 			denied.setText("Access denied");
