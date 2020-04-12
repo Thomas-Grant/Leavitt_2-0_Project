@@ -50,7 +50,7 @@ public class SqlCon {
 	//Get Count All Housings
 	public static int getCountAllHousing() {
 		String query = "SELECT COUNT(*) FROM Housing";
-		int countAllHousing = 0;
+		int countTotalAllHousing = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
@@ -58,7 +58,7 @@ public class SqlCon {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			while(rs.next()) {
-				countAllHousing = rs.getInt(1);
+				countTotalAllHousing = rs.getInt(1);
 			}
 		
 			con.close();
@@ -66,7 +66,7 @@ public class SqlCon {
 			System.out.println(e);
 		}
 		
-		return countAllHousing;
+		return countTotalAllHousing;
 	}
 	//Get $ Range Housings
 	//Get $ Average Housings
@@ -80,6 +80,15 @@ public class SqlCon {
 	// ### For Grade Average ###
 	//Get Count Current Customers
 	//Get Count Total Customers
+	
+	
+	// ######### Queries for Admin page #########
+	
+	// ##### For Housing table ##### --> All get are based on HousingID
+	
+	// 
+	
+	
 	
 }
 
