@@ -91,6 +91,23 @@ public class LeavittApp {
 	//Search
 	static JButton goButton;
 	
+	//Client
+	static JButton goClientButton;
+	static JLabel customerIDInfoText;
+	static JLabel firstNameInfoText;
+	static JLabel lastNameInfoText;
+	static JLabel dateBirthInfoText;
+	static JLabel phoneInfoText;
+	static JLabel emailInfoText;
+	static JLabel customerSinceLabel;
+	static JLabel customerSinceInfoText;
+	static JLabel complaintsCountLabel;
+	static JLabel complaintsCountInfoText;
+	static JLabel unpaidCountLabel;
+	static JLabel unpaidCountInfoText;
+	static JLabel customerGradeLabel;
+	static JLabel customerGradeInfoText;
+	
 	//Declare variables
 	//Admin
 	static boolean housingBool = false;
@@ -312,15 +329,11 @@ public class LeavittApp {
 			}
 		});
 		
-		
-		
-		
 		//Add the main panel and display the frame
 		frame.getContentPane().add(navigationPanel);
 		frame.getContentPane().add(notificationPanel);
 		frame.getContentPane().add(contentPanel);
 		frame.getContentPane().add(copyrightsPanel);
-		
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Leavitt 2.0");
@@ -1457,12 +1470,192 @@ public class LeavittApp {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel clientLabel = new JLabel("Client page!");
-		clientLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		clientLabel.setFont(new Font("Dubai Medium", Font.BOLD, 22));
-		clientLabel.setForeground(new Color(0, 0, 0));
-		clientLabel.setBounds(0, 0, 1000, 650);
-		contentPanel.add(clientLabel);
+		JLabel customerIDFindLabel = new JLabel("Customer ID: ");
+		customerIDFindLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		customerIDFindLabel.setFont(new Font("Dubai Medium", Font.BOLD, 20));
+		customerIDFindLabel.setBackground(SystemColor.activeCaption);
+		customerIDFindLabel.setForeground(SystemColor.WHITE);
+		customerIDFindLabel.setBounds(30, 30, 300, 80);
+		customerIDFindLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		customerIDFindLabel.setOpaque(true);
+		contentPanel.add(customerIDFindLabel);
+		
+		JTextField customerIDVal = new JTextField();
+		customerIDVal.setHorizontalAlignment(SwingConstants.CENTER);
+		customerIDVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		customerIDVal.setBackground(SystemColor.WHITE);
+		customerIDVal.setForeground(new Color(70, 130, 180));
+		customerIDVal.setBounds(340, 30, 520, 80);
+		customerIDVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		customerIDVal.setOpaque(true);
+		contentPanel.add(customerIDVal);
+		
+		int customerAddX = 30;
+		int customerAddY = 130;
+		int customerAddWidth = 250;
+		int customerAddHeight = 40;
+		
+		firstNameLabel = new JLabel("First Name: ");
+		firstNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		firstNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		firstNameLabel.setForeground(new Color(70, 130, 180));
+		firstNameLabel.setBounds(customerAddX, customerAddY, 150, customerAddHeight);
+		firstNameLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		firstNameInfoText = new JLabel("Test");
+		firstNameInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		firstNameInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		firstNameInfoText.setBackground(SystemColor.activeCaption);
+		firstNameInfoText.setForeground(SystemColor.WHITE);
+		firstNameInfoText.setBounds(customerAddX + 150, customerAddY, customerAddWidth, customerAddHeight);
+		firstNameInfoText.setOpaque(true);
+		firstNameInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		lastNameLabel = new JLabel("Last Name: ");
+		lastNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lastNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		lastNameLabel.setForeground(new Color(70, 130, 180));
+		lastNameLabel.setBounds(customerAddX, customerAddY + 70, 150, customerAddHeight);
+		lastNameLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		lastNameInfoText = new JLabel("");
+		lastNameInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		lastNameInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		lastNameInfoText.setBackground(SystemColor.activeCaption);
+		lastNameInfoText.setForeground(SystemColor.WHITE);
+		lastNameInfoText.setBounds(customerAddX + 150, customerAddY + 70, customerAddWidth, customerAddHeight);
+		lastNameInfoText.setOpaque(true);
+		lastNameInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		dateBirthLabel = new JLabel("Date of Birth: ");
+		dateBirthLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		dateBirthLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		dateBirthLabel.setForeground(new Color(70, 130, 180));
+		dateBirthLabel.setBounds(customerAddX, customerAddY + 140, 150, customerAddHeight);
+		dateBirthLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		dateBirthInfoText = new JLabel("");
+		dateBirthInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		dateBirthInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		dateBirthInfoText.setBackground(SystemColor.activeCaption);
+		dateBirthInfoText.setForeground(SystemColor.WHITE);
+		dateBirthInfoText.setBounds(customerAddX + 150, customerAddY + 140, customerAddWidth, customerAddHeight);
+		dateBirthInfoText.setOpaque(true);
+		dateBirthInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		phoneLabel = new JLabel("Phone Number: ");
+		phoneLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		phoneLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		phoneLabel.setForeground(new Color(70, 130, 180));
+		phoneLabel.setBounds(customerAddX, customerAddY + 210, 150, customerAddHeight);
+		phoneLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		phoneInfoText = new JLabel("");
+		phoneInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		phoneInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		phoneInfoText.setBackground(SystemColor.activeCaption);
+		phoneInfoText.setForeground(SystemColor.WHITE);
+		phoneInfoText.setBounds(customerAddX + 150, customerAddY + 210, customerAddWidth, customerAddHeight);
+		phoneInfoText.setOpaque(true);
+		phoneInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		emailLabel = new JLabel("Email: ");
+		emailLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		emailLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		emailLabel.setForeground(new Color(70, 130, 180));
+		emailLabel.setBounds(customerAddX, customerAddY + 280, 150, customerAddHeight);
+		emailLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		emailInfoText = new JLabel("");
+		emailInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		emailInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		emailInfoText.setBackground(SystemColor.activeCaption);
+		emailInfoText.setForeground(SystemColor.WHITE);
+		emailInfoText.setBounds(customerAddX + 150, customerAddY + 280, customerAddWidth, customerAddHeight);
+		emailInfoText.setOpaque(true);
+		emailInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		customerSinceLabel = new JLabel("Customer since");
+		customerSinceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		customerSinceLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		customerSinceLabel.setForeground(new Color(70, 130, 180));
+		customerSinceLabel.setBounds(customerAddX + 500, customerAddY, 330, customerAddHeight);
+		customerSinceLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		customerSinceInfoText = new JLabel("");
+		customerSinceInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		customerSinceInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		customerSinceInfoText.setBackground(SystemColor.activeCaption);
+		customerSinceInfoText.setForeground(SystemColor.WHITE);
+		customerSinceInfoText.setBounds(customerAddX + 500, customerAddY+customerAddHeight, 330, customerAddHeight+10);
+		customerSinceInfoText.setOpaque(true);
+		customerSinceInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		complaintsCountLabel = new JLabel("Complaints");
+		complaintsCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		complaintsCountLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		complaintsCountLabel.setForeground(new Color(70, 130, 180));
+		complaintsCountLabel.setBounds(customerAddX + 500, customerAddY + 110, 330, customerAddHeight);
+		complaintsCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		complaintsCountInfoText = new JLabel("");
+		complaintsCountInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		complaintsCountInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		complaintsCountInfoText.setBackground(SystemColor.activeCaption);
+		complaintsCountInfoText.setForeground(SystemColor.WHITE);
+		complaintsCountInfoText.setBounds(customerAddX + 500, customerAddY+110+customerAddHeight, 330, customerAddHeight+10);
+		complaintsCountInfoText.setOpaque(true);
+		complaintsCountInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		unpaidCountLabel = new JLabel("Unpaids");
+		unpaidCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		unpaidCountLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		unpaidCountLabel.setForeground(new Color(70, 130, 180));
+		unpaidCountLabel.setBounds(customerAddX + 500, customerAddY + 220, 330, customerAddHeight);
+		unpaidCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		unpaidCountInfoText = new JLabel("");
+		unpaidCountInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		unpaidCountInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		unpaidCountInfoText.setBackground(SystemColor.activeCaption);
+		unpaidCountInfoText.setForeground(SystemColor.WHITE);
+		unpaidCountInfoText.setBounds(customerAddX + 500, customerAddY+220+customerAddHeight, 330, customerAddHeight+10);
+		unpaidCountInfoText.setOpaque(true);
+		unpaidCountInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		customerGradeLabel = new JLabel("Unpaids");
+		customerGradeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		customerGradeLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		customerGradeLabel.setForeground(new Color(70, 130, 180));
+		customerGradeLabel.setBounds(customerAddX, customerAddY + 370, customerAddX + 130 + customerAddWidth, 110);
+		customerGradeLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		customerGradeInfoText = new JLabel("");
+		customerGradeInfoText.setHorizontalAlignment(SwingConstants.CENTER);
+		customerGradeInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		customerGradeInfoText.setBackground(SystemColor.activeCaption);
+		customerGradeInfoText.setForeground(SystemColor.WHITE);
+		customerGradeInfoText.setBounds(2*customerAddX + 130 + customerAddWidth, customerAddY + 370, 420, 110);
+		customerGradeInfoText.setOpaque(true);
+		customerGradeInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		goClientButton = new JButton("GO");
+		goClientButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		goClientButton.setBackground(SystemColor.activeCaption);
+		goClientButton.setForeground(SystemColor.WHITE);
+		goClientButton.setBounds(870, 30, 90, 80);
+		goClientButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(goClientButton);
+		
+		goClientButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				displayCustomerSheet();
+				frame.repaint();
+			}
+		});
+		
 	}
 	
 	private void accountPage() {
@@ -1807,6 +2000,7 @@ public class LeavittApp {
 
 	//displayHousingModifier() method
 	public static void displayHousingModifier(int housingID) {
+
 		
 	}
 
@@ -1827,6 +2021,30 @@ public class LeavittApp {
 	
 	//displaySearchAvailable() method
 	public static void displaySearchAvailable() {
+		
+	}
+	
+	//displayCustomer
+	public static void displayCustomerSheet() {
+		//If valid query, then
+		contentPanel.add(firstNameLabel);
+		contentPanel.add(firstNameInfoText);
+		contentPanel.add(lastNameLabel);
+		contentPanel.add(lastNameInfoText);
+		contentPanel.add(dateBirthLabel);
+		contentPanel.add(dateBirthInfoText);
+		contentPanel.add(phoneLabel);
+		contentPanel.add(phoneInfoText);
+		contentPanel.add(emailLabel);
+		contentPanel.add(emailInfoText);
+		contentPanel.add(customerSinceLabel);
+		contentPanel.add(customerSinceInfoText);
+		contentPanel.add(complaintsCountLabel);
+		contentPanel.add(complaintsCountInfoText);
+		contentPanel.add(unpaidCountLabel);
+		contentPanel.add(unpaidCountInfoText);
+		contentPanel.add(customerGradeLabel);
+		contentPanel.add(customerGradeInfoText);
 		
 	}
 	
