@@ -68,7 +68,6 @@ public class Login implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String user = userText.getText();
 		String password = passwordText.getText();
-		
 		if(!user.equals("admin") || !password.equals("pass")) {
 			denied.setText("Access denied");
 		}
