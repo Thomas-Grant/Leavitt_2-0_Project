@@ -2,24 +2,26 @@
  *  @date	3/30/2020
  */
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -41,9 +43,6 @@ public class LeavittApp {
 	static JButton searchButton;
 	static JButton clientButton;
 	static JButton accountButton;
-	
-	//Declare variables
-	private int countPage = 1;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -800,12 +799,192 @@ public class LeavittApp {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel accountLabel = new JLabel("Account page!");
-		accountLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		accountLabel.setFont(new Font("Dubai Medium", Font.BOLD, 22));
-		accountLabel.setForeground(new Color(0, 0, 0));
-		accountLabel.setBounds(0, 0, 1000, 650);
-		contentPanel.add(accountLabel);
+		//Welcome
+		JLabel welcomeLabel = new JLabel("Welcome user,");
+		welcomeLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		welcomeLabel.setFont(new Font("Dubai Medium", Font.BOLD, 40));
+		welcomeLabel.setForeground(SystemColor.activeCaption);
+		welcomeLabel.setBounds(40, 20, 500, 80);
+		contentPanel.add(welcomeLabel);
+		
+		//Username
+		JLabel usernameLabel = new JLabel("Username: ");
+		usernameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		usernameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 25));
+		usernameLabel.setBounds(40, 120, 200, 50);
+		contentPanel.add(usernameLabel);
+		
+		JLabel usernameRLabel = new JLabel("admin");
+		usernameRLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		usernameRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
+		usernameRLabel.setForeground(SystemColor.activeCaption);
+		usernameRLabel.setBounds(240, 120, 300, 50);
+		contentPanel.add(usernameRLabel);
+		
+		//Date of birth
+		JLabel dateBirthLabel = new JLabel("Date of birth: ");
+		dateBirthLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		dateBirthLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 25));
+		dateBirthLabel.setBounds(40, 170, 200, 50);
+		contentPanel.add(dateBirthLabel);
+		
+		JLabel dateBirthRLabel = new JLabel("08/05/1983");
+		dateBirthRLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		dateBirthRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
+		dateBirthRLabel.setForeground(SystemColor.activeCaption);
+		dateBirthRLabel.setBounds(240, 170, 300, 50);
+		contentPanel.add(dateBirthRLabel);
+		
+		//Position
+		JLabel positionLabel = new JLabel("Position: ");
+		positionLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		positionLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 25));
+		positionLabel.setBounds(40, 220, 200, 50);
+		contentPanel.add(positionLabel);
+		
+		JLabel positionRLabel = new JLabel("Help Desk");
+		positionRLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		positionRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
+		positionRLabel.setForeground(SystemColor.activeCaption);
+		positionRLabel.setBounds(240, 220, 300, 50);
+		contentPanel.add(positionRLabel);
+		
+		//Phone
+		JLabel phoneLabel = new JLabel("Phone number: ");
+		phoneLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		phoneLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 25));
+		phoneLabel.setBounds(40, 270, 200, 50);
+		contentPanel.add(phoneLabel);
+		
+		JLabel phoneRLabel = new JLabel("435-865-5214");
+		phoneRLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		phoneRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
+		phoneRLabel.setForeground(SystemColor.activeCaption);
+		phoneRLabel.setBounds(240, 270, 300, 50);
+		contentPanel.add(phoneRLabel);
+		
+		//Email
+		JLabel emailLabel = new JLabel("Email: ");
+		emailLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		emailLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 25));
+		emailLabel.setBounds(40, 320, 200, 50);
+		contentPanel.add(emailLabel);
+		
+		JLabel emailRLabel = new JLabel("admin@leavitt.com");
+		emailRLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		emailRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
+		emailRLabel.setForeground(SystemColor.activeCaption);
+		emailRLabel.setBounds(240, 320, 300, 50);
+		contentPanel.add(emailRLabel);
+		
+		//Reset password
+		JLabel resetPassLabel = new JLabel("Reset password");
+		resetPassLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		resetPassLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 35));
+		resetPassLabel.setBounds(40, 400, 300, 50);
+		contentPanel.add(resetPassLabel);
+		
+		JLabel oldPassLabel = new JLabel("Old password: ");
+		oldPassLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		oldPassLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 20));
+		oldPassLabel.setBounds(40, 460, 200, 50);
+		contentPanel.add(oldPassLabel);
+		
+		JPasswordField oldPass = new JPasswordField();
+		oldPass.setBounds(250, 475, 150, 25);
+		contentPanel.add(oldPass);
+		
+		JLabel newPassLabel = new JLabel("New password: ");
+		newPassLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		newPassLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 20));
+		newPassLabel.setBounds(40, 510, 200, 50);
+		contentPanel.add(newPassLabel);
+		
+		JPasswordField newPass = new JPasswordField();
+		newPass.setBounds(250, 525, 150, 25);
+		contentPanel.add(newPass);
+		
+		JLabel newPass2Label = new JLabel("New password: ");
+		newPass2Label.setHorizontalAlignment(SwingConstants.LEFT);
+		newPass2Label.setFont(new Font("Dubai Medium", Font.PLAIN, 20));
+		newPass2Label.setBounds(40, 560, 200, 50);
+		contentPanel.add(newPass2Label);
+		
+		JPasswordField newPass2 = new JPasswordField();
+		newPass2.setBounds(250, 575, 150, 25);
+		contentPanel.add(newPass2);
+		
+		//Cancel reset pass
+      	JButton cancelButton = new JButton("Cancel");
+      	cancelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	cancelButton.setBackground(new Color(128, 128, 128));
+      	cancelButton.setForeground(SystemColor.WHITE);
+      	cancelButton.setBounds(430, 475, 80, 50);
+      	cancelButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(cancelButton);
+		
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				oldPass.setText("");
+				newPass.setText("");
+				newPass2.setText("");
+				frame.repaint();
+			}
+		});
+		
+		//Submit reset pass
+      	JButton submitButton = new JButton("Submit");
+      	submitButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	submitButton.setBackground(new Color(63, 150, 63));
+      	submitButton.setForeground(SystemColor.WHITE);
+      	submitButton.setBounds(430, 550, 80, 50);
+      	submitButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(submitButton);
+		
+		submitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Will save the new password for this person
+				//Will display flash text "wrong password" or "submitted"
+			}
+		});
+		
+		
+		//logout
+      	JButton logOutButton = new JButton("Log out");
+      	logOutButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	logOutButton.setBackground(new Color(153, 0, 0));
+      	logOutButton.setForeground(SystemColor.WHITE);
+      	logOutButton.setBounds(620, 560, 340, 70);
+      	logOutButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(logOutButton);
+		
+		logOutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		
+		//Image and info
+		JTextArea bioText = new JTextArea ("Our clients benefit from competitive,\nsophisticated insurance and risk management\nsolutions. Leavitt Group's team of insurance\nprofessionals consists of individuals with a wide\nrange of experience, many of whom are\nconsidered regional and national leaders in their\nrespective fields.");
+		bioText.setFont(new Font("Dubai Medium", Font.BOLD, 14));
+		bioText.setBounds(630, 360, 350, 200);
+      	contentPanel.add(bioText);
+      	
+      	try {
+  		JLabel leavittPhoto = new JLabel();
+  		leavittPhoto.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("Cedar-Leavitt.jpg")).getImage().getScaledInstance(340, 200, Image.SCALE_SMOOTH)));
+      	leavittPhoto.setBounds(620, 20, 340, 200);
+      	contentPanel.add(leavittPhoto);
+          	
+      	JLabel leavittLogo = new JLabel();
+      	leavittLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("Leavitt-Group-Logo.png")));
+      	leavittLogo.setBounds(630, 180, 320, 200);
+      	contentPanel.add(leavittLogo);
+      	}
+      	catch (Exception e){
+      		System.out.println(e);
+      	}
+		
 	}
 	
 	private void unpaidPage() {
