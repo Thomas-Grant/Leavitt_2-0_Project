@@ -69,6 +69,8 @@ public class LeavittApp {
 	static JLabel numOfBathroomsLabel;
 	static JTextField numOfBathroomsText;
 	static JButton confirmHousingAddButton;
+	static JButton confirmHousingModButton;
+	static JButton confirmHousingDelButton;
 	//Add Customer
 	static JLabel customerIDLabel;
 	static JTextField customerIDText;
@@ -87,6 +89,8 @@ public class LeavittApp {
 	static JLabel dateRegisteredLabel;
 	static JTextField dateRegisteredText;
 	static JButton confirmCustomerAddButton;
+	static JButton confirmCustomerModButton;
+	static JButton confirmCustomerDelButton;
 	
 	//Search
 	static JButton goButton;
@@ -851,9 +855,7 @@ public class LeavittApp {
 				housingBool = true;
 				housingAdminButton.setBackground(SystemColor.text);
 				housingAdminButton.setForeground(SystemColor.activeCaption);
-				removeHousingAdd();
-				removeCustomerAdd();
-				removeSearch();
+				removeStuff();
 				contentPanel.revalidate();
 				contentPanel.repaint();
 				//printValues();
@@ -880,9 +882,8 @@ public class LeavittApp {
 					housingAdminButton.setForeground(SystemColor.activeCaption);
 					housingAdd = true;
 					housingAddButton.setBackground(new Color(63, 150, 63));
+					removeStuff();
 					addHousingAdd();
-					removeCustomerAdd();
-					removeSearch();
 					contentPanel.revalidate();
 					contentPanel.repaint();
 					//printValues();
@@ -910,9 +911,8 @@ public class LeavittApp {
 					housingAdminButton.setForeground(SystemColor.activeCaption);
 					housingMod = true;
 					housingModButton.setBackground(new Color(245, 181, 46));
+					removeStuff();
 					addSearch();
-					removeHousingAdd();
-					removeCustomerAdd();
 					contentPanel.revalidate();
 					contentPanel.repaint();
 					//printValues();
@@ -940,9 +940,8 @@ public class LeavittApp {
 					housingAdminButton.setForeground(SystemColor.activeCaption);
 					housingDel = true;
 					housingDelButton.setBackground(new Color(153, 0, 0));
+					removeStuff();
 					addSearch();
-					removeHousingAdd();
-					removeCustomerAdd();
 					contentPanel.revalidate();
 					contentPanel.repaint();
 					//printValues();
@@ -969,9 +968,7 @@ public class LeavittApp {
 				customerAdminButton.setForeground(SystemColor.activeCaption);
 				housingAdminButton.setBackground(SystemColor.activeCaption);
 				housingAdminButton.setForeground(SystemColor.text);
-				removeCustomerAdd();
-				removeHousingAdd();
-				removeSearch();
+				removeStuff();
 				contentPanel.revalidate();
 				contentPanel.repaint();
 				//printValues();
@@ -998,9 +995,8 @@ public class LeavittApp {
 					customerAdminButton.setForeground(SystemColor.activeCaption);
 					customerAdd = true;
 					customerAddButton.setBackground(new Color(63, 150, 63));
+					removeStuff();
 					addCustomerAdd();
-					removeHousingAdd();
-					removeSearch();
 					contentPanel.revalidate();
 					contentPanel.repaint();
 					//printValues();
@@ -1028,9 +1024,8 @@ public class LeavittApp {
 					customerAdminButton.setForeground(SystemColor.activeCaption);
 					customerMod = true;
 					customerModButton.setBackground(new Color(245, 181, 46));
+					removeStuff();
 					addSearch();
-					removeHousingAdd();
-					removeCustomerAdd();
 					contentPanel.revalidate();
 					contentPanel.repaint();
 					//printValues();
@@ -1058,9 +1053,8 @@ public class LeavittApp {
 					customerAdminButton.setForeground(SystemColor.activeCaption);
 					customerDel = true;
 					customerDelButton.setBackground(new Color(153, 0, 0));
+					removeStuff();
 					addSearch();
-					removeHousingAdd();
-					removeCustomerAdd();
 					contentPanel.revalidate();
 					contentPanel.repaint();
 					//printValues();
@@ -1094,16 +1088,32 @@ public class LeavittApp {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(housingBool && housingMod) {
-						//displayHousingModifier();
+						removeStuff();
+						addSearch();
+						displayHousingModifier(0);
+						contentPanel.revalidate();
+						contentPanel.repaint();
 					}
 					else if(housingBool && housingDel) {
-						//displayHousingDeleter();
+						removeStuff();
+						addSearch();
+						displayHousingDeleter(0);
+						contentPanel.revalidate();
+						contentPanel.repaint();
 					}
 					else if(customerBool && customerMod) {
-						//displayCustomerModifier();
+						removeStuff();
+						addSearch();
+						displayCustomerModifier(0);
+						contentPanel.revalidate();
+						contentPanel.repaint();
 					}
 					else if(customerBool && customerDel) {
-						//displayCustomerDeleter();
+						removeStuff();
+						addSearch();
+						displayCustomerDeleter(0);
+						contentPanel.revalidate();
+						contentPanel.repaint();
 					}
 				}
 				catch(Exception e2) {
@@ -1207,6 +1217,35 @@ public class LeavittApp {
 			}
 		});
 		
+		confirmHousingModButton = new JButton("Modify");
+		confirmHousingModButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		confirmHousingModButton.setBackground(new Color(245, 181, 46));
+		confirmHousingModButton.setForeground(SystemColor.WHITE);
+		confirmHousingModButton.setBounds(housingAddX + 160, housingAddY + 435, housingAddWidth, housingAddHeight + 10);
+		confirmHousingModButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		confirmHousingModButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				frame.repaint();
+			}
+		});
+		
+		confirmHousingDelButton = new JButton("Delete");
+		confirmHousingDelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		confirmHousingDelButton.setBackground(new Color(153, 0, 0));
+		confirmHousingDelButton.setForeground(SystemColor.WHITE);
+		confirmHousingDelButton.setBounds(housingAddX + 160, housingAddY + 435, housingAddWidth, housingAddHeight + 10);
+		confirmHousingDelButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		confirmHousingDelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				frame.repaint();
+			}
+		});
 		
 		//Add Customer
 		int customerAddX = 550;
@@ -1216,73 +1255,73 @@ public class LeavittApp {
 
 		customerIDLabel = new JLabel("Customer ID: ");
 		customerIDLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		customerIDLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		customerIDLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
 		customerIDLabel.setForeground(new Color(0, 0, 0));
 		customerIDLabel.setBounds(customerAddX, customerAddY, 150, 60);
 		
 		customerIDText = new JTextField();
 		customerIDText.setHorizontalAlignment(SwingConstants.CENTER);
-		customerIDText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		customerIDText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
 		customerIDText.setForeground(SystemColor.BLACK);
 		customerIDText.setBounds(customerAddX + 160, customerAddY + 10, customerAddWidth, customerAddHeight);
 		
 		firstNameLabel = new JLabel("First Name: ");
 		firstNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		firstNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		firstNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
 		firstNameLabel.setForeground(new Color(0, 0, 0));
 		firstNameLabel.setBounds(customerAddX, customerAddY + 70, 150, 60);
 		
 		firstNameText = new JTextField();
 		firstNameText.setHorizontalAlignment(SwingConstants.CENTER);
-		firstNameText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		firstNameText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
 		firstNameText.setForeground(SystemColor.BLACK);
 		firstNameText.setBounds(customerAddX + 160, customerAddY + 80, customerAddWidth, customerAddHeight);
 		
 		lastNameLabel = new JLabel("Last Name: ");
 		lastNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lastNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		lastNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
 		lastNameLabel.setForeground(new Color(0, 0, 0));
 		lastNameLabel.setBounds(customerAddX, customerAddY + 140, 150, 60);
 		
 		lastNameText = new JTextField();
 		lastNameText.setHorizontalAlignment(SwingConstants.CENTER);
-		lastNameText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		lastNameText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
 		lastNameText.setForeground(SystemColor.BLACK);
 		lastNameText.setBounds(customerAddX + 160, customerAddY + 150, customerAddWidth, customerAddHeight);
 		
 		dateBirthLabel = new JLabel("Date of Birth: ");
 		dateBirthLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		dateBirthLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		dateBirthLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
 		dateBirthLabel.setForeground(new Color(0, 0, 0));
 		dateBirthLabel.setBounds(customerAddX, customerAddY + 210, 150, 60);
 		
 		dateBirthText = new JTextField();
 		dateBirthText.setHorizontalAlignment(SwingConstants.CENTER);
-		dateBirthText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		dateBirthText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
 		dateBirthText.setForeground(SystemColor.BLACK);
 		dateBirthText.setBounds(customerAddX + 160, customerAddY + 220, customerAddWidth, customerAddHeight);
 		
 		phoneLabel = new JLabel("Phone Number: ");
 		phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		phoneLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		phoneLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
 		phoneLabel.setForeground(new Color(0, 0, 0));
 		phoneLabel.setBounds(customerAddX-50, customerAddY + 280, 200, 60);
 		
 		phoneText = new JTextField();
 		phoneText.setHorizontalAlignment(SwingConstants.CENTER);
-		phoneText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		phoneText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
 		phoneText.setForeground(SystemColor.BLACK);
 		phoneText.setBounds(customerAddX + 160, customerAddY + 290, customerAddWidth, customerAddHeight);
 		
 		emailLabel = new JLabel("Email: ");
 		emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		emailLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		emailLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
 		emailLabel.setForeground(new Color(0, 0, 0));
 		emailLabel.setBounds(customerAddX-80, customerAddY + 350, 230, 60);
 		
 		emailText = new JTextField();
 		emailText.setHorizontalAlignment(SwingConstants.CENTER);
-		emailText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		emailText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
 		emailText.setForeground(SystemColor.BLACK);
 		emailText.setBounds(customerAddX + 160, customerAddY + 360, customerAddWidth, customerAddHeight);
 		
@@ -1294,6 +1333,36 @@ public class LeavittApp {
 		confirmCustomerAddButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
 		confirmCustomerAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				frame.repaint();
+			}
+		});
+		
+		confirmCustomerModButton = new JButton("Modify");
+		confirmCustomerModButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		confirmCustomerModButton.setBackground(new Color(245, 181, 46));
+		confirmCustomerModButton.setForeground(SystemColor.WHITE);
+		confirmCustomerModButton.setBounds(customerAddX + 160, customerAddY + 435, customerAddWidth, customerAddHeight + 10);
+		confirmCustomerModButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		confirmCustomerModButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				frame.repaint();
+			}
+		});
+		
+		confirmCustomerDelButton = new JButton("Add");
+		confirmCustomerDelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		confirmCustomerDelButton.setBackground(new Color(153, 0, 0));
+		confirmCustomerDelButton.setForeground(SystemColor.WHITE);
+		confirmCustomerDelButton.setBounds(customerAddX + 160, customerAddY + 435, customerAddWidth, customerAddHeight + 10);
+		confirmCustomerDelButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		confirmCustomerDelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
 				// otherwise, add successful, clear the textfields
@@ -1623,7 +1692,7 @@ public class LeavittApp {
 		unpaidCountInfoText.setOpaque(true);
 		unpaidCountInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
-		customerGradeLabel = new JLabel("Unpaids");
+		customerGradeLabel = new JLabel("Customer's Grade:");
 		customerGradeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		customerGradeLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
 		customerGradeLabel.setForeground(new Color(70, 130, 180));
@@ -1931,17 +2000,35 @@ public class LeavittApp {
 	//Add add housing feature in Admin
 	public static void addHousingAdd() {
 		contentPanel.add(housingIDLabel);
+		housingIDText.setText("");
+		housingIDText.setEditable(true);
 		contentPanel.add(housingIDText);
+
 		contentPanel.add(addressLabel);
+		addressText.setText("");
+		addressText.setEditable(true);
 		contentPanel.add(addressText);
+
 		contentPanel.add(typeLabel);
+		typeText.setText("");
+		typeText.setEditable(true);
 		contentPanel.add(typeText);
+
 		contentPanel.add(rentPriceLabel);
+		rentPriceText.setText("");
+		rentPriceText.setEditable(true);
 		contentPanel.add(rentPriceText);
+
 		contentPanel.add(numOfRoomsLabel);
+		numOfRoomsText.setText("");
+		numOfRoomsText.setEditable(true);
 		contentPanel.add(numOfRoomsText);
+		
 		contentPanel.add(numOfBathroomsLabel);
+		numOfBathroomsText.setText("");
+		numOfBathroomsText.setEditable(true);
 		contentPanel.add(numOfBathroomsText);
+		
 		contentPanel.add(confirmHousingAddButton);
 	}
 	
@@ -1961,22 +2048,145 @@ public class LeavittApp {
 		contentPanel.remove(numOfBathroomsText);
 		contentPanel.remove(confirmHousingAddButton);
 	}
+
+	//displayHousingModifier() method
+	public static void displayHousingModifier(int housingID) {
+		contentPanel.add(housingIDLabel);
+		housingIDText.setText("id number");
+		housingIDText.setEditable(true);
+		contentPanel.add(housingIDText);
+
+		contentPanel.add(addressLabel);
+		addressText.setText("address");
+		addressText.setEditable(true);
+		contentPanel.add(addressText);
+
+		contentPanel.add(typeLabel);
+		typeText.setText("type");
+		typeText.setEditable(true);
+		contentPanel.add(typeText);
+
+		contentPanel.add(rentPriceLabel);
+		rentPriceText.setText("price");
+		rentPriceText.setEditable(true);
+		contentPanel.add(rentPriceText);
+
+		contentPanel.add(numOfRoomsLabel);
+		numOfRoomsText.setText("num rooms");
+		numOfRoomsText.setEditable(true);
+		contentPanel.add(numOfRoomsText);
+		
+		contentPanel.add(numOfBathroomsLabel);
+		numOfBathroomsText.setText("num baths");
+		numOfBathroomsText.setEditable(true);
+		contentPanel.add(numOfBathroomsText);
+		
+		contentPanel.add(confirmHousingModButton);
+		
+	}
 	
+	//Remove Housing Modifier
+	public static void removeHousingModifier() {
+		contentPanel.remove(housingIDLabel);
+		contentPanel.remove(housingIDText);
+		contentPanel.remove(addressLabel);
+		contentPanel.remove(addressText);
+		contentPanel.remove(typeLabel);
+		contentPanel.remove(typeText);
+		contentPanel.remove(rentPriceLabel);
+		contentPanel.remove(rentPriceText);
+		contentPanel.remove(numOfRoomsLabel);
+		contentPanel.remove(numOfRoomsText);
+		contentPanel.remove(numOfBathroomsLabel);
+		contentPanel.remove(numOfBathroomsText);
+		contentPanel.remove(confirmHousingModButton);
+	}
+
+	//displayHousingDeleter() method
+	public static void displayHousingDeleter(int housingID) {
+		contentPanel.add(housingIDLabel);
+		housingIDText.setText("id number");
+		housingIDText.setEditable(false);
+		contentPanel.add(housingIDText);
+
+		contentPanel.add(addressLabel);
+		addressText.setText("address");
+		addressText.setEditable(false);
+		contentPanel.add(addressText);
+
+		contentPanel.add(typeLabel);
+		typeText.setText("type");
+		typeText.setEditable(false);
+		contentPanel.add(typeText);
+
+		contentPanel.add(rentPriceLabel);
+		rentPriceText.setText("price");
+		rentPriceText.setEditable(false);
+		contentPanel.add(rentPriceText);
+
+		contentPanel.add(numOfRoomsLabel);
+		numOfRoomsText.setText("num rooms");
+		numOfRoomsText.setEditable(false);
+		contentPanel.add(numOfRoomsText);
+		
+		contentPanel.add(numOfBathroomsLabel);
+		numOfBathroomsText.setText("num baths");
+		numOfBathroomsText.setEditable(false);
+		contentPanel.add(numOfBathroomsText);
+		
+		contentPanel.add(confirmHousingDelButton);
+	}
+	
+	//Remove Housing Deleter
+	public static void removeHousingDeleter() {
+		contentPanel.remove(housingIDLabel);
+		contentPanel.remove(housingIDText);
+		contentPanel.remove(addressLabel);
+		contentPanel.remove(addressText);
+		contentPanel.remove(typeLabel);
+		contentPanel.remove(typeText);
+		contentPanel.remove(rentPriceLabel);
+		contentPanel.remove(rentPriceText);
+		contentPanel.remove(numOfRoomsLabel);
+		contentPanel.remove(numOfRoomsText);
+		contentPanel.remove(numOfBathroomsLabel);
+		contentPanel.remove(numOfBathroomsText);
+		contentPanel.remove(confirmHousingDelButton);
+
+	}
 	
 	//Add add customer feature in Admin
 	public static void addCustomerAdd() {
 		contentPanel.add(customerIDLabel);
+		customerIDText.setText("");
+		customerIDText.setEditable(true);
 		contentPanel.add(customerIDText);
+		
 		contentPanel.add(firstNameLabel);
+		firstNameText.setText("");
+		firstNameText.setEditable(true);
 		contentPanel.add(firstNameText);
+		
 		contentPanel.add(lastNameLabel);
+		lastNameText.setText("");
+		lastNameText.setEditable(true);
 		contentPanel.add(lastNameText);
+		
 		contentPanel.add(dateBirthLabel);
+		dateBirthText.setText("");
+		dateBirthText.setEditable(true);
 		contentPanel.add(dateBirthText);
+		
 		contentPanel.add(phoneLabel);
+		phoneText.setText("");
+		phoneText.setEditable(true);
 		contentPanel.add(phoneText);
+		
 		contentPanel.add(emailLabel);
+		emailText.setText("");
+		emailText.setEditable(true);
 		contentPanel.add(emailText);
+		
 		contentPanel.add(confirmCustomerAddButton);
 	}
 	
@@ -1996,27 +2206,121 @@ public class LeavittApp {
 		contentPanel.remove(emailText);
 		contentPanel.remove(confirmCustomerAddButton);
 	}
-	
-
-	//displayHousingModifier() method
-	public static void displayHousingModifier(int housingID) {
-
 		
-	}
-
-	//displayHousingDeleter() method
-	public static void displayHousingDeleter(int housingID) {
-		
-	}
 	
 	//displayCustomerModifier() method
 	public static void displayCustomerModifier(int customerID) {
+		contentPanel.add(customerIDLabel);
+		customerIDText.setText("id num");
+		customerIDText.setEditable(true);
+		contentPanel.add(customerIDText);
 		
+		contentPanel.add(firstNameLabel);
+		firstNameText.setText("first name");
+		firstNameText.setEditable(true);
+		contentPanel.add(firstNameText);
+		
+		contentPanel.add(lastNameLabel);
+		lastNameText.setText("last name");
+		lastNameText.setEditable(true);
+		contentPanel.add(lastNameText);
+		
+		contentPanel.add(dateBirthLabel);
+		dateBirthText.setText("birthday");
+		dateBirthText.setEditable(true);
+		contentPanel.add(dateBirthText);
+		
+		contentPanel.add(phoneLabel);
+		phoneText.setText("phone");
+		phoneText.setEditable(true);
+		contentPanel.add(phoneText);
+		
+		contentPanel.add(emailLabel);
+		emailText.setText("email");
+		emailText.setEditable(true);
+		contentPanel.add(emailText);
+		
+		contentPanel.add(confirmCustomerModButton);
+	}
+	
+	//Remove Customer Modifier
+	public static void removeCustomerModifier() {
+		contentPanel.remove(customerIDLabel);
+		contentPanel.remove(customerIDText);
+		contentPanel.remove(firstNameLabel);
+		contentPanel.remove(firstNameText);
+		contentPanel.remove(lastNameLabel);
+		contentPanel.remove(lastNameText);
+		contentPanel.remove(dateBirthLabel);
+		contentPanel.remove(dateBirthText);
+		contentPanel.remove(phoneLabel);
+		contentPanel.remove(phoneText);
+		contentPanel.remove(emailLabel);
+		contentPanel.remove(emailText);
+		contentPanel.remove(confirmCustomerModButton);
 	}
 	
 	//displayCustomerDeleter() method
 	public static void displayCustomerDeleter(int customerID) {
+		contentPanel.add(customerIDLabel);
+		customerIDText.setText("id num");
+		customerIDText.setEditable(false);
+		contentPanel.add(customerIDText);
 		
+		contentPanel.add(firstNameLabel);
+		firstNameText.setText("first name");
+		firstNameText.setEditable(false);
+		contentPanel.add(firstNameText);
+		
+		contentPanel.add(lastNameLabel);
+		lastNameText.setText("last name");
+		lastNameText.setEditable(false);
+		contentPanel.add(lastNameText);
+		
+		contentPanel.add(dateBirthLabel);
+		dateBirthText.setText("birthday");
+		dateBirthText.setEditable(false);
+		contentPanel.add(dateBirthText);
+		
+		contentPanel.add(phoneLabel);
+		phoneText.setText("phone");
+		phoneText.setEditable(false);
+		contentPanel.add(phoneText);
+		
+		contentPanel.add(emailLabel);
+		emailText.setText("email");
+		emailText.setEditable(false);
+		contentPanel.add(emailText);
+		
+		contentPanel.add(confirmCustomerDelButton);
+	}
+	
+	//Remove Customer Deleter
+	public static void removeCustomerDeleter() {
+		contentPanel.remove(customerIDLabel);
+		contentPanel.remove(customerIDText);
+		contentPanel.remove(firstNameLabel);
+		contentPanel.remove(firstNameText);
+		contentPanel.remove(lastNameLabel);
+		contentPanel.remove(lastNameText);
+		contentPanel.remove(dateBirthLabel);
+		contentPanel.remove(dateBirthText);
+		contentPanel.remove(phoneLabel);
+		contentPanel.remove(phoneText);
+		contentPanel.remove(emailLabel);
+		contentPanel.remove(emailText);
+		contentPanel.remove(confirmCustomerDelButton);
+	}
+	
+	//Remove Stuff Method
+	public static void removeStuff() {
+		removeSearch();
+		removeHousingAdd();
+		removeCustomerAdd();
+		removeHousingModifier();
+		removeCustomerModifier();
+		removeHousingDeleter();
+		removeCustomerDeleter();
 	}
 	
 	//displaySearchAvailable() method
