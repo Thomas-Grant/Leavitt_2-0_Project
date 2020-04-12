@@ -88,6 +88,9 @@ public class LeavittApp {
 	static JTextField dateRegisteredText;
 	static JButton confirmCustomerAddButton;
 	
+	//Search
+	static JButton goButton;
+	
 	//Declare variables
 	//Admin
 	static boolean housingBool = false;
@@ -233,7 +236,7 @@ public class LeavittApp {
 		homePage();
 		
 		//Add to copyrights panel
-		JLabel copyrights = new JLabel("Copyrights");
+		JLabel copyrights = new JLabel("Copyrights \u0040 SUU Students 2019-2020");
 		copyrights.setBackground(SystemColor.BLACK);
 		copyrights.setHorizontalAlignment(SwingConstants.CENTER);
 		copyrights.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -1291,12 +1294,163 @@ public class LeavittApp {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel searchLabel = new JLabel("Search page!");
-		searchLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		searchLabel.setFont(new Font("Dubai Medium", Font.BOLD, 22));
-		searchLabel.setForeground(new Color(0, 0, 0));
-		searchLabel.setBounds(0, 0, 1000, 650);
-		contentPanel.add(searchLabel);
+		JLabel numberAvailableLabel = new JLabel("Available Housings");
+		numberAvailableLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		numberAvailableLabel.setFont(new Font("Dubai Medium", Font.BOLD, 18));
+		numberAvailableLabel.setBackground(SystemColor.activeCaption);
+		numberAvailableLabel.setForeground(SystemColor.WHITE);
+		numberAvailableLabel.setBounds(20, 10, 160, 50);
+		numberAvailableLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		numberAvailableLabel.setOpaque(true);
+      	contentPanel.add(numberAvailableLabel);
+		
+		JLabel numberAvailableVal = new JLabel("9");
+		numberAvailableVal.setHorizontalAlignment(SwingConstants.CENTER);
+		numberAvailableVal.setFont(new Font("Dubai Medium", Font.BOLD, 24));
+		numberAvailableVal.setBackground(SystemColor.info);
+		numberAvailableVal.setForeground(new Color(70, 130, 180));
+		numberAvailableVal.setBounds(20, 60, 160, 50);
+		numberAvailableVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		numberAvailableVal.setOpaque(true);
+		contentPanel.add(numberAvailableVal);
+		
+		JLabel filerLabel = new JLabel("FILTER");
+		filerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		filerLabel.setFont(new Font("Dubai Medium", Font.BOLD, 12));
+		filerLabel.setBackground(SystemColor.activeCaption);
+		filerLabel.setForeground(SystemColor.WHITE);
+		filerLabel.setBounds(200, 10, 720, 15);
+		filerLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		filerLabel.setOpaque(true);
+		contentPanel.add(filerLabel);
+		
+		JLabel cityLabel = new JLabel("CITY");
+		cityLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		cityLabel.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		cityLabel.setBackground(SystemColor.activeCaption);
+		cityLabel.setForeground(SystemColor.WHITE);
+		cityLabel.setBounds(200, 25, 144, 30);
+		cityLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		cityLabel.setOpaque(true);
+		contentPanel.add(cityLabel);
+		
+		JTextField cityVal = new JTextField();
+		cityVal.setHorizontalAlignment(SwingConstants.CENTER);
+		cityVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		cityVal.setBackground(SystemColor.WHITE);
+		cityVal.setForeground(new Color(70, 130, 180));
+		cityVal.setBounds(200, 55, 144, 55);
+		cityVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		cityVal.setOpaque(true);
+		contentPanel.add(cityVal);
+		
+		JLabel rentPriceLabel = new JLabel("RENT PRICE");
+		rentPriceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		rentPriceLabel.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		rentPriceLabel.setBackground(SystemColor.activeCaption);
+		rentPriceLabel.setForeground(SystemColor.WHITE);
+		rentPriceLabel.setBounds(344, 25, 144, 30);
+		rentPriceLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		rentPriceLabel.setOpaque(true);
+		contentPanel.add(rentPriceLabel);
+		
+		JTextField rentPriceMinVal = new JTextField();
+		rentPriceMinVal.setHorizontalAlignment(SwingConstants.CENTER);
+		rentPriceMinVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		rentPriceMinVal.setBackground(SystemColor.WHITE);
+		rentPriceMinVal.setForeground(new Color(70, 130, 180));
+		rentPriceMinVal.setBounds(344, 55, 72, 55);
+		rentPriceMinVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		rentPriceMinVal.setOpaque(true);
+		contentPanel.add(rentPriceMinVal);
+		
+		JTextField rentPriceMaxVal = new JTextField();
+		rentPriceMaxVal.setHorizontalAlignment(SwingConstants.CENTER);
+		rentPriceMaxVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		rentPriceMaxVal.setBackground(SystemColor.WHITE);
+		rentPriceMaxVal.setForeground(new Color(70, 130, 180));
+		rentPriceMaxVal.setBounds(416, 55, 72, 55);
+		rentPriceMaxVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		rentPriceMaxVal.setOpaque(true);
+		contentPanel.add(rentPriceMaxVal);
+		
+		JLabel typeLabel = new JLabel("TYPE");
+		typeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		typeLabel.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		typeLabel.setBackground(SystemColor.activeCaption);
+		typeLabel.setForeground(SystemColor.WHITE);
+		typeLabel.setBounds(488, 25, 144, 30);
+		typeLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		typeLabel.setOpaque(true);
+		contentPanel.add(typeLabel);
+		
+		JTextField typeVal = new JTextField();
+		typeVal.setHorizontalAlignment(SwingConstants.CENTER);
+		typeVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		typeVal.setBackground(SystemColor.WHITE);
+		typeVal.setForeground(new Color(70, 130, 180));
+		typeVal.setBounds(488, 55, 144, 55);
+		typeVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		typeVal.setOpaque(true);
+		contentPanel.add(typeVal);
+		
+		JLabel numRoomsLabel = new JLabel("NUM ROOMS");
+		numRoomsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		numRoomsLabel.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		numRoomsLabel.setBackground(SystemColor.activeCaption);
+		numRoomsLabel.setForeground(SystemColor.WHITE);
+		numRoomsLabel.setBounds(632, 25, 144, 30);
+		numRoomsLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		numRoomsLabel.setOpaque(true);
+		contentPanel.add(numRoomsLabel);
+		
+		JTextField numRoomsVal = new JTextField();
+		numRoomsVal.setHorizontalAlignment(SwingConstants.CENTER);
+		numRoomsVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		numRoomsVal.setBackground(SystemColor.WHITE);
+		numRoomsVal.setForeground(new Color(70, 130, 180));
+		numRoomsVal.setBounds(632, 55, 144, 55);
+		numRoomsVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		numRoomsVal.setOpaque(true);
+		contentPanel.add(numRoomsVal);
+		
+		JLabel numBathroomsLabel = new JLabel("NUM BATHROOMS");
+		numBathroomsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		numBathroomsLabel.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		numBathroomsLabel.setBackground(SystemColor.activeCaption);
+		numBathroomsLabel.setForeground(SystemColor.WHITE);
+		numBathroomsLabel.setBounds(776, 25, 144, 30);
+		numBathroomsLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		numBathroomsLabel.setOpaque(true);
+		contentPanel.add(numBathroomsLabel);
+		
+		JTextField numBathroomsVal = new JTextField();
+		numBathroomsVal.setHorizontalAlignment(SwingConstants.CENTER);
+		numBathroomsVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		numBathroomsVal.setBackground(SystemColor.WHITE);
+		numBathroomsVal.setForeground(new Color(70, 130, 180));
+		numBathroomsVal.setBounds(776, 55, 144, 55);
+		numBathroomsVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		numBathroomsVal.setOpaque(true);
+		contentPanel.add(numBathroomsVal);
+		
+		goButton = new JButton("GO");
+		goButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		goButton.setBackground(SystemColor.activeCaption);
+		goButton.setForeground(SystemColor.WHITE);
+		goButton.setBounds(930, 10, 50, 100);
+		goButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(goButton);
+		
+		goButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				// displaySearchAvailable();
+				frame.repaint();
+			}
+		});
+		
 		}
 	
 	private void clientPage() {
@@ -1671,6 +1825,10 @@ public class LeavittApp {
 		
 	}
 	
+	//displaySearchAvailable() method
+	public static void displaySearchAvailable() {
+		
+	}
 	
 	//Hover effect method for the navigation bar
 	public static void colorCurrentPage(JButton button){
