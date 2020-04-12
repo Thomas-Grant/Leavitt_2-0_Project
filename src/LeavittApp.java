@@ -1923,36 +1923,75 @@ public class LeavittApp {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel unpaidLabel = new JLabel("Unpaid page!");
-		unpaidLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		unpaidLabel.setFont(new Font("Dubai Medium", Font.BOLD, 22));
-		unpaidLabel.setForeground(new Color(0, 0, 0));
-		unpaidLabel.setBounds(0, 0, 1000, 650);
-		contentPanel.add(unpaidLabel);
+		JLabel unpaidCountLabel = new JLabel("Rent Unpaid: ");
+		unpaidCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		unpaidCountLabel.setFont(new Font("Dubai Medium", Font.BOLD, 25));
+		unpaidCountLabel.setBackground(SystemColor.activeCaption);
+		unpaidCountLabel.setForeground(Color.WHITE);
+		unpaidCountLabel.setBounds(50, 30, 450, 70);
+		unpaidCountLabel.setOpaque(true);
+		unpaidCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(unpaidCountLabel);
+		
+		JLabel unpaidCountVal = new JLabel("5");
+		unpaidCountVal.setHorizontalAlignment(SwingConstants.CENTER);
+		unpaidCountVal.setFont(new Font("Dubai Medium", Font.BOLD, 30));
+		unpaidCountVal.setBackground(SystemColor.info);
+		unpaidCountVal.setForeground(SystemColor.activeCaption);
+		unpaidCountVal.setBounds(500, 30, 450, 70);
+		unpaidCountVal.setOpaque(true);
+		unpaidCountVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(unpaidCountVal);
 	}
 	
 	private void contractPage() {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel contractLabel = new JLabel("Contract page!");
-		contractLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		contractLabel.setFont(new Font("Dubai Medium", Font.BOLD, 22));
-		contractLabel.setForeground(new Color(0, 0, 0));
-		contractLabel.setBounds(0, 0, 1000, 650);
-		contentPanel.add(contractLabel);
+		JLabel contractCountLabel = new JLabel("Contract Expiring Soon: ");
+		contractCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		contractCountLabel.setFont(new Font("Dubai Medium", Font.BOLD, 25));
+		contractCountLabel.setBackground(SystemColor.activeCaption);
+		contractCountLabel.setForeground(Color.WHITE);
+		contractCountLabel.setBounds(50, 30, 450, 70);
+		contractCountLabel.setOpaque(true);
+		contractCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(contractCountLabel);
+		
+		JLabel contractCountVal = new JLabel("3");
+		contractCountVal.setHorizontalAlignment(SwingConstants.CENTER);
+		contractCountVal.setFont(new Font("Dubai Medium", Font.BOLD, 30));
+		contractCountVal.setBackground(SystemColor.info);
+		contractCountVal.setForeground(SystemColor.activeCaption);
+		contractCountVal.setBounds(500, 30, 450, 70);
+		contractCountVal.setOpaque(true);
+		contractCountVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(contractCountVal);
 	}
 	
 	private void maintenancePage() {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel maintenanceLabel = new JLabel("Maintenance page!");
-		maintenanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		maintenanceLabel.setFont(new Font("Dubai Medium", Font.BOLD, 22));
-		maintenanceLabel.setForeground(new Color(0, 0, 0));
-		maintenanceLabel.setBounds(0, 0, 1000, 650);
-		contentPanel.add(maintenanceLabel);
+		JLabel maintenanceCountLabel = new JLabel("Maintenance Requested (On-going): ");
+		maintenanceCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		maintenanceCountLabel.setFont(new Font("Dubai Medium", Font.BOLD, 25));
+		maintenanceCountLabel.setBackground(SystemColor.activeCaption);
+		maintenanceCountLabel.setForeground(Color.WHITE);
+		maintenanceCountLabel.setBounds(50, 30, 450, 70);
+		maintenanceCountLabel.setOpaque(true);
+		maintenanceCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(maintenanceCountLabel);
+		
+		JLabel maintenanceCountVal = new JLabel("8");
+		maintenanceCountVal.setHorizontalAlignment(SwingConstants.CENTER);
+		maintenanceCountVal.setFont(new Font("Dubai Medium", Font.BOLD, 30));
+		maintenanceCountVal.setBackground(SystemColor.info);
+		maintenanceCountVal.setForeground(SystemColor.activeCaption);
+		maintenanceCountVal.setBounds(500, 30, 450, 70);
+		maintenanceCountVal.setOpaque(true);
+		maintenanceCountVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(maintenanceCountVal);
 	}
 	
 	//Reset Color Admin
