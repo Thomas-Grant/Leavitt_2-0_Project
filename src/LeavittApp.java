@@ -7,10 +7,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,15 +30,75 @@ public class LeavittApp {
 	JFrame frame;
 	JPanel navigationPanel;
 	JPanel notificationPanel;
-	JPanel contentPanel;
+	static JPanel contentPanel;
 	JPanel copyrightsPanel;
 	
 	//Declare buttons
+	//Nav bar
 	static JButton homeButton;
 	static JButton adminButton;
 	static JButton searchButton;
 	static JButton clientButton;
 	static JButton accountButton;
+	//Admin
+	static JButton housingAdminButton;
+	static JButton housingAddButton;
+	static JButton housingModButton;
+	static JButton housingDelButton;
+	static JButton customerAdminButton;
+	static JButton customerAddButton;
+	static JButton customerModButton;
+	static JButton customerDelButton;
+	
+	//Add Stuff in admin
+	//Search
+	static JLabel idLabel;
+	static JTextField idText;
+	static JButton searchIDButton;
+	//Add Housing
+	static JLabel housingIDLabel;
+	static JTextField housingIDText;
+	static JLabel addressLabel;
+	static JTextField addressText;
+	static JLabel typeLabel;
+	static JTextField typeText;
+	static JLabel rentPriceLabel;
+	static JTextField rentPriceText;
+	static JLabel numOfRoomsLabel;
+	static JTextField numOfRoomsText;
+	static JLabel numOfBathroomsLabel;
+	static JTextField numOfBathroomsText;
+	static JButton confirmHousingAddButton;
+	//Add Customer
+	static JLabel customerIDLabel;
+	static JTextField customerIDText;
+	static JLabel firstNameLabel;
+	static JTextField firstNameText;
+	static JLabel lastNameLabel;
+	static JTextField lastNameText;
+	static JLabel dateBirthLabel;
+	static JTextField dateBirthText;
+	static JLabel gradeLabel;
+	static JTextField gradeText;
+	static JLabel phoneLabel;
+	static JTextField phoneText;
+	static JLabel emailLabel;
+	static JTextField emailText;
+	static JLabel dateRegisteredLabel;
+	static JTextField dateRegisteredText;
+	static JButton confirmCustomerAddButton;
+	
+	//Declare variables
+	//Admin
+	static boolean housingBool = false;
+	static boolean housingAdd = false;
+	static boolean housingMod = false;
+	static boolean housingDel = false;
+	
+	static boolean customerBool = false;
+	static boolean customerAdd = false;
+	static boolean customerMod = false;
+	static boolean customerDel = false;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -763,12 +819,472 @@ public class LeavittApp {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel adminLabel = new JLabel("Admin page!");
-		adminLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		adminLabel.setFont(new Font("Dubai Medium", Font.BOLD, 22));
-		adminLabel.setForeground(new Color(0, 0, 0));
-		adminLabel.setBounds(0, 0, 1000, 650);
-		contentPanel.add(adminLabel);
+	    //Housing button
+      	housingAdminButton = new JButton("HOUSING");
+      	housingAdminButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	housingAdminButton.setBackground(SystemColor.activeCaption);
+      	housingAdminButton.setForeground(SystemColor.text);
+      	housingAdminButton.setBounds(40, 40, 180, 80);
+      	housingAdminButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(housingAdminButton);
+		
+		housingAdminButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetColorAdmin();
+				resetValChange();
+				housingBool = true;
+				housingAdminButton.setBackground(SystemColor.text);
+				housingAdminButton.setForeground(SystemColor.activeCaption);
+				removeHousingAdd();
+				removeCustomerAdd();
+				removeSearch();
+				contentPanel.revalidate();
+				contentPanel.repaint();
+				//printValues();
+				frame.repaint();
+			}
+		});
+		
+	    //Housing Add button
+      	housingAddButton = new JButton("Add");
+      	housingAddButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	housingAddButton.setBackground(new Color(128,128,128));
+      	housingAddButton.setForeground(SystemColor.WHITE);
+      	housingAddButton.setBounds(40, 130, 180, 80);
+      	housingAddButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(housingAddButton);
+		
+		housingAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(housingBool) {
+					resetColorAdmin();
+					resetValChange();
+					housingBool = true;
+					housingAdminButton.setBackground(SystemColor.text);
+					housingAdminButton.setForeground(SystemColor.activeCaption);
+					housingAdd = true;
+					housingAddButton.setBackground(new Color(63, 150, 63));
+					addHousingAdd();
+					removeCustomerAdd();
+					removeSearch();
+					contentPanel.revalidate();
+					contentPanel.repaint();
+					//printValues();
+					frame.repaint();
+				}
+			}
+		});
+		
+	    //Housing Modify button
+      	housingModButton = new JButton("Modify");
+      	housingModButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	housingModButton.setBackground(new Color(128,128,128));
+      	housingModButton.setForeground(SystemColor.WHITE);
+      	housingModButton.setBounds(40, 220, 180, 80);
+      	housingModButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(housingModButton);
+		
+		housingModButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(housingBool) {
+					resetColorAdmin();
+					resetValChange();
+					housingBool = true;
+					housingAdminButton.setBackground(SystemColor.text);
+					housingAdminButton.setForeground(SystemColor.activeCaption);
+					housingMod = true;
+					housingModButton.setBackground(new Color(245, 181, 46));
+					addSearch();
+					removeHousingAdd();
+					removeCustomerAdd();
+					contentPanel.revalidate();
+					contentPanel.repaint();
+					//printValues();
+					frame.repaint();
+				}
+			}
+		});
+		
+	    //Housing Delete button
+      	housingDelButton = new JButton("Delete");
+      	housingDelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	housingDelButton.setBackground(new Color(128,128,128));
+      	housingDelButton.setForeground(SystemColor.WHITE);
+      	housingDelButton.setBounds(40, 310, 180, 80);
+      	housingDelButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(housingDelButton);
+		
+		housingDelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(housingBool) {
+					resetColorAdmin();
+					resetValChange();
+					housingBool = true;
+					housingAdminButton.setBackground(SystemColor.text);
+					housingAdminButton.setForeground(SystemColor.activeCaption);
+					housingDel = true;
+					housingDelButton.setBackground(new Color(153, 0, 0));
+					addSearch();
+					removeHousingAdd();
+					removeCustomerAdd();
+					contentPanel.revalidate();
+					contentPanel.repaint();
+					//printValues();
+					frame.repaint();
+				}
+			}
+		});
+		
+		//Customer button
+      	customerAdminButton = new JButton("CUSTOMER");
+      	customerAdminButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	customerAdminButton.setBackground(SystemColor.activeCaption);
+      	customerAdminButton.setForeground(SystemColor.text);
+      	customerAdminButton.setBounds(230, 40, 180, 80);
+      	customerAdminButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(customerAdminButton);
+		
+		customerAdminButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetColorAdmin();
+				resetValChange();
+				customerBool = true;
+				customerAdminButton.setBackground(SystemColor.text);
+				customerAdminButton.setForeground(SystemColor.activeCaption);
+				housingAdminButton.setBackground(SystemColor.activeCaption);
+				housingAdminButton.setForeground(SystemColor.text);
+				removeCustomerAdd();
+				removeHousingAdd();
+				removeSearch();
+				contentPanel.revalidate();
+				contentPanel.repaint();
+				//printValues();
+				frame.repaint();
+			}
+		});
+		
+	    //Customer Add button
+      	customerAddButton = new JButton("Add");
+      	customerAddButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	customerAddButton.setBackground(new Color(128,128,128));
+      	customerAddButton.setForeground(SystemColor.WHITE);
+      	customerAddButton.setBounds(230, 130, 180, 80);
+      	customerAddButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(customerAddButton);
+		
+		customerAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(customerBool) {
+					resetColorAdmin();
+					resetValChange();
+					customerBool = true;
+					customerAdminButton.setBackground(SystemColor.text);
+					customerAdminButton.setForeground(SystemColor.activeCaption);
+					customerAdd = true;
+					customerAddButton.setBackground(new Color(63, 150, 63));
+					addCustomerAdd();
+					removeHousingAdd();
+					removeSearch();
+					contentPanel.revalidate();
+					contentPanel.repaint();
+					//printValues();
+					frame.repaint();
+				}
+			}
+		});
+		
+		//Customer Modify button
+      	customerModButton = new JButton("Modify");
+      	customerModButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	customerModButton.setBackground(new Color(128,128,128));
+      	customerModButton.setForeground(SystemColor.WHITE);
+      	customerModButton.setBounds(230, 220, 180, 80);
+      	customerModButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(customerModButton);
+		
+		customerModButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(customerBool) {
+					resetColorAdmin();
+					resetValChange();
+					customerBool = true;
+					customerAdminButton.setBackground(SystemColor.text);
+					customerAdminButton.setForeground(SystemColor.activeCaption);
+					customerMod = true;
+					customerModButton.setBackground(new Color(245, 181, 46));
+					addSearch();
+					removeHousingAdd();
+					removeCustomerAdd();
+					contentPanel.revalidate();
+					contentPanel.repaint();
+					//printValues();
+					frame.repaint();
+				}
+			}
+		});
+		
+		//Customer Delete button
+      	customerDelButton = new JButton("Delete");
+      	customerDelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+      	customerDelButton.setBackground(new Color(128,128,128));
+      	customerDelButton.setForeground(SystemColor.WHITE);
+      	customerDelButton.setBounds(230, 310, 180, 80);
+      	customerDelButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		contentPanel.add(customerDelButton);
+		
+		customerDelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(customerBool) {
+					resetColorAdmin();
+					resetValChange();
+					customerBool = true;
+					customerAdminButton.setBackground(SystemColor.text);
+					customerAdminButton.setForeground(SystemColor.activeCaption);
+					customerDel = true;
+					customerDelButton.setBackground(new Color(153, 0, 0));
+					addSearch();
+					removeHousingAdd();
+					removeCustomerAdd();
+					contentPanel.revalidate();
+					contentPanel.repaint();
+					//printValues();
+					frame.repaint();
+				}
+			}
+		});
+		
+		//ID search
+		idLabel = new JLabel("ID: ");
+		idLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		idLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		idLabel.setForeground(new Color(0, 0, 0));
+		idLabel.setBounds(40, 450, 50, 60);
+		
+		
+		idText = new JTextField();
+		idText.setHorizontalAlignment(SwingConstants.CENTER);
+		idText.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		idText.setForeground(SystemColor.BLACK);
+		idText.setBounds(100, 450, 310, 60);
+		
+		searchIDButton = new JButton("Search");
+		searchIDButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		searchIDButton.setBackground(new Color(128,128,128));
+		searchIDButton.setForeground(SystemColor.WHITE);
+		searchIDButton.setBounds(230, 520, 180, 50);
+		searchIDButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		searchIDButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(housingBool && housingMod) {
+						//displayHousingModifier();
+					}
+					else if(housingBool && housingDel) {
+						//displayHousingDeleter();
+					}
+					else if(customerBool && customerMod) {
+						//displayCustomerModifier();
+					}
+					else if(customerBool && customerDel) {
+						//displayCustomerDeleter();
+					}
+				}
+				catch(Exception e2) {
+					// Should output flash message Invalid ID as well
+					System.out.println(e2);
+				}
+				frame.repaint();
+			}
+		});
+		
+		//Add Housing
+		int housingAddX = 550;
+		int housingAddY = 50;
+		int housingAddWidth = 250;
+		int housingAddHeight = 40;
+		
+		housingIDLabel = new JLabel("Housing ID: ");
+		housingIDLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		housingIDLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		housingIDLabel.setForeground(new Color(0, 0, 0));
+		housingIDLabel.setBounds(housingAddX, housingAddY, 150, 60);
+		
+		housingIDText = new JTextField();
+		housingIDText.setHorizontalAlignment(SwingConstants.CENTER);
+		housingIDText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		housingIDText.setForeground(SystemColor.BLACK);
+		housingIDText.setBounds(housingAddX + 160, housingAddY + 10, housingAddWidth, housingAddHeight);
+		
+		addressLabel = new JLabel("Address: ");
+		addressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		addressLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		addressLabel.setForeground(new Color(0, 0, 0));
+		addressLabel.setBounds(housingAddX, housingAddY + 70, 150, 60);
+		
+		addressText = new JTextField();
+		addressText.setHorizontalAlignment(SwingConstants.CENTER);
+		addressText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		addressText.setForeground(SystemColor.BLACK);
+		addressText.setBounds(housingAddX + 160, housingAddY + 80, housingAddWidth, housingAddHeight);
+		
+		typeLabel = new JLabel("Type: ");
+		typeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		typeLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		typeLabel.setForeground(new Color(0, 0, 0));
+		typeLabel.setBounds(housingAddX, housingAddY + 140, 150, 60);
+		
+		typeText = new JTextField();
+		typeText.setHorizontalAlignment(SwingConstants.CENTER);
+		typeText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		typeText.setForeground(SystemColor.BLACK);
+		typeText.setBounds(housingAddX + 160, housingAddY + 150, housingAddWidth, housingAddHeight);
+		
+		rentPriceLabel = new JLabel("Rent Price: ");
+		rentPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		rentPriceLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		rentPriceLabel.setForeground(new Color(0, 0, 0));
+		rentPriceLabel.setBounds(housingAddX, housingAddY + 210, 150, 60);
+		
+		rentPriceText = new JTextField();
+		rentPriceText.setHorizontalAlignment(SwingConstants.CENTER);
+		rentPriceText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		rentPriceText.setForeground(SystemColor.BLACK);
+		rentPriceText.setBounds(housingAddX + 160, housingAddY + 220, housingAddWidth, housingAddHeight);
+		
+		numOfRoomsLabel = new JLabel("Number of Rooms: ");
+		numOfRoomsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		numOfRoomsLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		numOfRoomsLabel.setForeground(new Color(0, 0, 0));
+		numOfRoomsLabel.setBounds(housingAddX-50, housingAddY + 280, 200, 60);
+		
+		numOfRoomsText = new JTextField();
+		numOfRoomsText.setHorizontalAlignment(SwingConstants.CENTER);
+		numOfRoomsText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		numOfRoomsText.setForeground(SystemColor.BLACK);
+		numOfRoomsText.setBounds(housingAddX + 160, housingAddY + 290, housingAddWidth, housingAddHeight);
+		
+		numOfBathroomsLabel = new JLabel("Number of Bathrooms: ");
+		numOfBathroomsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		numOfBathroomsLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		numOfBathroomsLabel.setForeground(new Color(0, 0, 0));
+		numOfBathroomsLabel.setBounds(housingAddX-80, housingAddY + 350, 230, 60);
+		
+		numOfBathroomsText = new JTextField();
+		numOfBathroomsText.setHorizontalAlignment(SwingConstants.CENTER);
+		numOfBathroomsText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		numOfBathroomsText.setForeground(SystemColor.BLACK);
+		numOfBathroomsText.setBounds(housingAddX + 160, housingAddY + 360, housingAddWidth, housingAddHeight);
+		
+		confirmHousingAddButton = new JButton("Add");
+		confirmHousingAddButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		confirmHousingAddButton.setBackground(new Color(63, 150, 63));
+		confirmHousingAddButton.setForeground(SystemColor.WHITE);
+		confirmHousingAddButton.setBounds(housingAddX + 160, housingAddY + 435, housingAddWidth, housingAddHeight + 10);
+		confirmHousingAddButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		confirmHousingAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				frame.repaint();
+			}
+		});
+		
+		
+		//Add Customer
+		int customerAddX = 550;
+		int customerAddY = 50;
+		int customerAddWidth = 250;
+		int customerAddHeight = 40;
+
+		customerIDLabel = new JLabel("Customer ID: ");
+		customerIDLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		customerIDLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		customerIDLabel.setForeground(new Color(0, 0, 0));
+		customerIDLabel.setBounds(customerAddX, customerAddY, 150, 60);
+		
+		customerIDText = new JTextField();
+		customerIDText.setHorizontalAlignment(SwingConstants.CENTER);
+		customerIDText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		customerIDText.setForeground(SystemColor.BLACK);
+		customerIDText.setBounds(customerAddX + 160, customerAddY + 10, customerAddWidth, customerAddHeight);
+		
+		firstNameLabel = new JLabel("First Name: ");
+		firstNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		firstNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		firstNameLabel.setForeground(new Color(0, 0, 0));
+		firstNameLabel.setBounds(customerAddX, customerAddY + 70, 150, 60);
+		
+		firstNameText = new JTextField();
+		firstNameText.setHorizontalAlignment(SwingConstants.CENTER);
+		firstNameText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		firstNameText.setForeground(SystemColor.BLACK);
+		firstNameText.setBounds(customerAddX + 160, customerAddY + 80, customerAddWidth, customerAddHeight);
+		
+		lastNameLabel = new JLabel("Last Name: ");
+		lastNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lastNameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		lastNameLabel.setForeground(new Color(0, 0, 0));
+		lastNameLabel.setBounds(customerAddX, customerAddY + 140, 150, 60);
+		
+		lastNameText = new JTextField();
+		lastNameText.setHorizontalAlignment(SwingConstants.CENTER);
+		lastNameText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		lastNameText.setForeground(SystemColor.BLACK);
+		lastNameText.setBounds(customerAddX + 160, customerAddY + 150, customerAddWidth, customerAddHeight);
+		
+		dateBirthLabel = new JLabel("Date of Birth: ");
+		dateBirthLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		dateBirthLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		dateBirthLabel.setForeground(new Color(0, 0, 0));
+		dateBirthLabel.setBounds(customerAddX, customerAddY + 210, 150, 60);
+		
+		dateBirthText = new JTextField();
+		dateBirthText.setHorizontalAlignment(SwingConstants.CENTER);
+		dateBirthText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		dateBirthText.setForeground(SystemColor.BLACK);
+		dateBirthText.setBounds(customerAddX + 160, customerAddY + 220, customerAddWidth, customerAddHeight);
+		
+		phoneLabel = new JLabel("Phone Number: ");
+		phoneLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		phoneLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		phoneLabel.setForeground(new Color(0, 0, 0));
+		phoneLabel.setBounds(customerAddX-50, customerAddY + 280, 200, 60);
+		
+		phoneText = new JTextField();
+		phoneText.setHorizontalAlignment(SwingConstants.CENTER);
+		phoneText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		phoneText.setForeground(SystemColor.BLACK);
+		phoneText.setBounds(customerAddX + 160, customerAddY + 290, customerAddWidth, customerAddHeight);
+		
+		emailLabel = new JLabel("Email: ");
+		emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		emailLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		emailLabel.setForeground(new Color(0, 0, 0));
+		emailLabel.setBounds(customerAddX-80, customerAddY + 350, 230, 60);
+		
+		emailText = new JTextField();
+		emailText.setHorizontalAlignment(SwingConstants.CENTER);
+		emailText.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
+		emailText.setForeground(SystemColor.BLACK);
+		emailText.setBounds(customerAddX + 160, customerAddY + 360, customerAddWidth, customerAddHeight);
+		
+		confirmCustomerAddButton = new JButton("Add");
+		confirmCustomerAddButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		confirmCustomerAddButton.setBackground(new Color(63, 150, 63));
+		confirmCustomerAddButton.setForeground(SystemColor.WHITE);
+		confirmCustomerAddButton.setBounds(customerAddX + 160, customerAddY + 435, customerAddWidth, customerAddHeight + 10);
+		confirmCustomerAddButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		confirmCustomerAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//try query, if error, display flash message "wrong input"
+				// otherwise, add successful, clear the textfields
+				frame.repaint();
+			}
+		});
+
 	}
 	
 	private void searchPage() {
@@ -1023,6 +1539,139 @@ public class LeavittApp {
 		contentPanel.add(maintenanceLabel);
 	}
 	
+	//Reset Color Admin
+	public static void resetColorAdmin() {
+		
+      	housingAdminButton.setBackground(SystemColor.activeCaption);
+      	housingAdminButton.setForeground(SystemColor.text);
+      	customerAdminButton.setBackground(SystemColor.activeCaption);
+      	customerAdminButton.setForeground(SystemColor.text);
+      	
+		housingAddButton.setBackground(new Color(128, 128, 128));
+		housingModButton.setBackground(new Color(128, 128, 128));
+		housingDelButton.setBackground(new Color(128, 128, 128));
+		customerAddButton.setBackground(new Color(128, 128, 128));
+		customerModButton.setBackground(new Color(128, 128, 128));
+		customerDelButton.setBackground(new Color(128, 128, 128));
+	}
+	
+	//Reset changeValAdmin
+	public static void resetValChange() {
+		housingBool = false;
+		housingAdd = false;
+		housingMod = false;
+		housingDel = false;
+		customerBool = false;
+		customerAdd = false;
+		customerMod = false;
+		customerDel = false;
+	}
+	
+	//Add search feature in Admin
+	public static void addSearch() {
+		contentPanel.add(idLabel);
+		contentPanel.add(idText);
+		contentPanel.add(searchIDButton);
+	}
+	
+	//Remove search feature in Admin
+	public static void removeSearch() {
+		contentPanel.remove(idLabel);
+		contentPanel.remove(idText);
+		contentPanel.remove(searchIDButton);
+	}
+	
+	//Add add housing feature in Admin
+	public static void addHousingAdd() {
+		contentPanel.add(housingIDLabel);
+		contentPanel.add(housingIDText);
+		contentPanel.add(addressLabel);
+		contentPanel.add(addressText);
+		contentPanel.add(typeLabel);
+		contentPanel.add(typeText);
+		contentPanel.add(rentPriceLabel);
+		contentPanel.add(rentPriceText);
+		contentPanel.add(numOfRoomsLabel);
+		contentPanel.add(numOfRoomsText);
+		contentPanel.add(numOfBathroomsLabel);
+		contentPanel.add(numOfBathroomsText);
+		contentPanel.add(confirmHousingAddButton);
+	}
+	
+	//Remove add housing feature in Admin
+	public static void removeHousingAdd() {
+		contentPanel.remove(housingIDLabel);
+		contentPanel.remove(housingIDText);
+		contentPanel.remove(addressLabel);
+		contentPanel.remove(addressText);
+		contentPanel.remove(typeLabel);
+		contentPanel.remove(typeText);
+		contentPanel.remove(rentPriceLabel);
+		contentPanel.remove(rentPriceText);
+		contentPanel.remove(numOfRoomsLabel);
+		contentPanel.remove(numOfRoomsText);
+		contentPanel.remove(numOfBathroomsLabel);
+		contentPanel.remove(numOfBathroomsText);
+		contentPanel.remove(confirmHousingAddButton);
+	}
+	
+	
+	//Add add customer feature in Admin
+	public static void addCustomerAdd() {
+		contentPanel.add(customerIDLabel);
+		contentPanel.add(customerIDText);
+		contentPanel.add(firstNameLabel);
+		contentPanel.add(firstNameText);
+		contentPanel.add(lastNameLabel);
+		contentPanel.add(lastNameText);
+		contentPanel.add(dateBirthLabel);
+		contentPanel.add(dateBirthText);
+		contentPanel.add(phoneLabel);
+		contentPanel.add(phoneText);
+		contentPanel.add(emailLabel);
+		contentPanel.add(emailText);
+		contentPanel.add(confirmCustomerAddButton);
+	}
+	
+	//Remove add customer feature in Admin
+	public static void removeCustomerAdd() {
+		contentPanel.remove(customerIDLabel);
+		contentPanel.remove(customerIDText);
+		contentPanel.remove(firstNameLabel);
+		contentPanel.remove(firstNameText);
+		contentPanel.remove(lastNameLabel);
+		contentPanel.remove(lastNameText);
+		contentPanel.remove(dateBirthLabel);
+		contentPanel.remove(dateBirthText);
+		contentPanel.remove(phoneLabel);
+		contentPanel.remove(phoneText);
+		contentPanel.remove(emailLabel);
+		contentPanel.remove(emailText);
+		contentPanel.remove(confirmCustomerAddButton);
+	}
+	
+
+	//displayHousingModifier() method
+	public static void displayHousingModifier(int housingID) {
+		
+	}
+
+	//displayHousingDeleter() method
+	public static void displayHousingDeleter(int housingID) {
+		
+	}
+	
+	//displayCustomerModifier() method
+	public static void displayCustomerModifier(int customerID) {
+		
+	}
+	
+	//displayCustomerDeleter() method
+	public static void displayCustomerDeleter(int customerID) {
+		
+	}
+	
+	
 	//Hover effect method for the navigation bar
 	public static void colorCurrentPage(JButton button){
 		homeButton.setBackground(SystemColor.activeCaption);
@@ -1056,5 +1705,20 @@ public class LeavittApp {
 			accountButton.setBackground(SystemColor.text);
 			accountButton.setForeground(SystemColor.activeCaption);
 		}
+	}
+	
+	//Test print value
+	public static void printValues() {
+		System.out.println("Housing Bool -> "+housingBool);
+		System.out.println("Housing Add -> "+housingAdd);
+		System.out.println("Housing Mod -> "+housingMod);
+		System.out.println("Housing Del -> "+housingDel);
+		System.out.println();
+		System.out.println("Customer Bool -> "+customerBool);
+		System.out.println("Customer Add -> "+customerAdd);
+		System.out.println("Customer Mod -> "+customerMod);
+		System.out.println("Customer Del -> "+customerDel);
+		System.out.println();
+		System.out.println();
 	}
 }
