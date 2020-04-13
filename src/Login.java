@@ -1,10 +1,10 @@
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -24,7 +25,11 @@ public class Login implements ActionListener{
 	private static JLabel passwordLabel;
 	private static JPasswordField passwordText;
 	private static JButton logButton;
+	private static JButton resetButton;
 	private static JLabel denied;
+	private static Scanner sc;
+	private static int alpha = 255;
+	private static int increment = -5;
 	
 	public static void main(String [] args){
 		
@@ -67,17 +72,59 @@ public class Login implements ActionListener{
 		passwordText.setBounds(300,70,165,30);
 		panel.add(passwordText);
 		
+		denied = new JLabel("");
+		denied.setBounds(200,125,100,30);
+		denied.setForeground(new Color(255,0,0));
+		panel.add(denied);
+		
+		resetButton = new JButton("Reset");
+		resetButton.setBounds(300,120,75,40);
+		resetButton.setBackground(Color.WHITE);
+		resetButton.setForeground(new Color(0, 74, 148));
+		resetButton.addActionListener(new Login());
+		panel.add(resetButton);
+		
+		resetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				userText.setText("");
+				passwordText.setText("");
+			}
+		});
+		
 		logButton = new JButton("Login");
-		logButton.setBounds(385,120,80,40);
+		logButton.setBounds(390,120,75,40);
 		logButton.setBackground(new Color(0, 74, 148));
 		logButton.setForeground(Color.WHITE);
 		logButton.addActionListener(new Login());
 		panel.add(logButton);
 		
-		denied = new JLabel("");
-		denied.setBounds(230,125,100,30);
-		denied.setForeground(Color.RED);
-		panel.add(denied);
+		logButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String user = userText.getText();
+				@SuppressWarnings("deprecation")
+				String password = passwordText.getText();
+				if(loginVerification(user, password)) {
+					denied.setText("");
+					frame.setVisible(false);
+					new LeavittApp();
+				}
+				else {
+
+					denied.setText("Access denied");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+						        alpha += increment;
+						        if (alpha <= 0) {
+						        	alpha = 0;
+						          denied.setText("");
+						        }
+						        denied.setForeground(new Color(255, 0, 0, alpha));
+						      }
+						    }).start();
+						alpha = 255;
+					}
+				}
+		});
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Leavitt 2.0 - Login");
@@ -89,17 +136,30 @@ public class Login implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String user = userText.getText();
-		@SuppressWarnings("deprecation")
-		String password = passwordText.getText();
-		if(!user.equals("admin") || !password.equals("pass")) {
-			denied.setText("Access denied");
-		}
-		else {
-			denied.setText("");
-			frame.setVisible(false);
-			new LeavittApp();
-		}
 	}
-
+	
+	public static boolean loginVerification(String username, String password) {
+		boolean found = false;
+		String tempUsername = "";
+		String tempPassword = "";
+		
+		try {
+			sc = new Scanner(new File("src/loginSec.txt"));
+			sc.useDelimiter("[,\n]");
+			
+			while(sc.hasNext() && !found) {
+				tempUsername = sc.next();
+				tempPassword = sc.next();
+				
+				if(tempUsername.trim().equals(username.trim()) && tempPassword.trim().contentEquals(password.trim())) {
+					found = true;
+				} 
+			}
+			sc.close();
+		}
+		catch (Exception e){
+			System.out.println(e);
+		}
+		return found;
+	}
 }
