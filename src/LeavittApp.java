@@ -3,6 +3,7 @@
  */
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -201,7 +202,7 @@ public class LeavittApp {
 		notificationPanel.add(notif);
 		
 		//Payments -- unpaid
-		JLabel paymentLabel = new JLabel("Unpaid: 0");
+		JLabel paymentLabel = new JLabel("Unpaid: "+SqlCon.getCountUnpaidRent());
 		paymentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		paymentLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 19));
 		paymentLabel.setForeground(new Color(70, 130, 180));
@@ -216,7 +217,7 @@ public class LeavittApp {
 		notificationPanel.add(unpaidButton);
 		
 		//Contracts -- Soon expired
-		JLabel contractLabel = new JLabel("Contract: 0");
+		JLabel contractLabel = new JLabel("Contract: "+SqlCon.getCountExpiringSoon());
 		contractLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		contractLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 19));
 		contractLabel.setForeground(new Color(70, 130, 180));
@@ -231,7 +232,7 @@ public class LeavittApp {
 		notificationPanel.add(contractButton);
 		
 		//Maintenances -- Status open
-		JLabel maintenanceLabel = new JLabel("Maintenance: 0");
+		JLabel maintenanceLabel = new JLabel("Maintenance: "+SqlCon.getCountOnGoingMaintenance());
 		maintenanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		maintenanceLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 19));
 		maintenanceLabel.setForeground(new Color(70, 130, 180));
@@ -457,8 +458,7 @@ public class LeavittApp {
 		
 		//Data
 		//x,y: (1,1)
-		//JLabel housing11label = new JLabel(Integer.toString(SqlCon.getCountSingleR()));
-		JLabel housing11label = new JLabel("1,1");
+		JLabel housing11label = new JLabel(Integer.toString(SqlCon.getCountAvailaibleDoubleHousing()));
 		housing11label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing11label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing11label.setBackground(SystemColor.info);
@@ -468,7 +468,7 @@ public class LeavittApp {
 		housing11label.setOpaque(true);
 		
 		//x,y: (2,1)
-		JLabel housing21label = new JLabel("2,1");
+		JLabel housing21label = new JLabel(Integer.toString(SqlCon.getCountAvailaibleSingleHousing()));
 		housing21label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing21label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing21label.setBackground(SystemColor.info);
@@ -478,7 +478,7 @@ public class LeavittApp {
 		housing21label.setOpaque(true);
 		
 		//x,y: (3,1)
-		JLabel housing31label = new JLabel("3,1");
+		JLabel housing31label = new JLabel(Integer.toString(SqlCon.getCountAvailaibleApartmentHousing()));
 		housing31label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing31label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing31label.setBackground(SystemColor.info);
@@ -488,7 +488,7 @@ public class LeavittApp {
 		housing31label.setOpaque(true);
 		
 		//x,y: (4,1)
-		JLabel housing41label = new JLabel("4,1");
+		JLabel housing41label = new JLabel(Integer.toString(SqlCon.getCountAvailaibleHouseHousing()));
 		housing41label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing41label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing41label.setBackground(SystemColor.info);
@@ -498,7 +498,7 @@ public class LeavittApp {
 		housing41label.setOpaque(true);
 		
 		//x,y: (5,1)
-		JLabel housing51label = new JLabel("5,1");
+		JLabel housing51label = new JLabel(Integer.toString(SqlCon.getCountAvailaibleHousing()));
 		housing51label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing51label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing51label.setBackground(SystemColor.info);
@@ -508,7 +508,7 @@ public class LeavittApp {
 		housing51label.setOpaque(true);
 		
 		//x,y: (1,2)
-		JLabel housing12label = new JLabel("1,2");
+		JLabel housing12label = new JLabel(Integer.toString(SqlCon.getCountAllDoubleHousing()));
 		housing12label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing12label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing12label.setBackground(SystemColor.info);
@@ -518,7 +518,7 @@ public class LeavittApp {
 		housing12label.setOpaque(true);
 		
 		//x,y: (2,2)
-		JLabel housing22label = new JLabel("2,2");
+		JLabel housing22label = new JLabel(Integer.toString(SqlCon.getCountAllSingleHousing()));
 		housing22label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing22label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing22label.setBackground(SystemColor.info);
@@ -528,7 +528,7 @@ public class LeavittApp {
 		housing22label.setOpaque(true);
 		
 		//x,y: (3,2)
-		JLabel housing32label = new JLabel("3,2");
+		JLabel housing32label = new JLabel(Integer.toString(SqlCon.getCountAllApartmentHousing()));
 		housing32label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing32label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing32label.setBackground(SystemColor.info);
@@ -538,7 +538,7 @@ public class LeavittApp {
 		housing32label.setOpaque(true);
 		
 		//x,y: (4,2)
-		JLabel housing42label = new JLabel("4,2");
+		JLabel housing42label = new JLabel(Integer.toString(SqlCon.getCountAllHouseHousing()));
 		housing42label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing42label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing42label.setBackground(SystemColor.info);
@@ -548,7 +548,7 @@ public class LeavittApp {
 		housing42label.setOpaque(true);
 		
 		//x,y: (5,2)
-		JLabel housing52label = new JLabel("5,2");
+		JLabel housing52label = new JLabel(Integer.toString(SqlCon.getCountAllHousing()));
 		housing52label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing52label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing52label.setBackground(SystemColor.info);
@@ -558,57 +558,108 @@ public class LeavittApp {
 		housing52label.setOpaque(true);
 		
 		//x,y: (1,3)
-		JLabel housing13label = new JLabel("1,3");
+		JLabel housing13label = new JLabel(Integer.toString((int)SqlCon.getRangeDoubleHousing()[0]));
 		housing13label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing13label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing13label.setBackground(SystemColor.info);
 		housing13label.setForeground(new Color(70, 130, 180));
-		housing13label.setBounds(housingX + 300, housingY + 50, 100, 100);
+		housing13label.setBounds(housingX + 300, housingY + 50, 100, 50);
 		housing13label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		housing13label.setOpaque(true);
 		
+		//x,y: (1,3-2)
+		JLabel housing132label = new JLabel(Integer.toString((int)SqlCon.getRangeDoubleHousing()[1]));
+		housing132label.setHorizontalAlignment(SwingConstants.CENTER);
+		housing132label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		housing132label.setBackground(SystemColor.info);
+		housing132label.setForeground(new Color(70, 130, 180));
+		housing132label.setBounds(housingX + 300, housingY + 100, 100, 50);
+		housing132label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		housing132label.setOpaque(true);
+		
+		
 		//x,y: (2,3)
-		JLabel housing23label = new JLabel("2,3");
+		JLabel housing23label = new JLabel(Integer.toString((int)SqlCon.getRangeSingleHousing()[0]));
 		housing23label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing23label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing23label.setBackground(SystemColor.info);
 		housing23label.setForeground(new Color(70, 130, 180));
-		housing23label.setBounds(housingX + 300, housingY + 150, 100, 100);
+		housing23label.setBounds(housingX + 300, housingY + 150, 100, 50);
 		housing23label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		housing23label.setOpaque(true);
 		
+		//x,y: (2,3-2)
+		JLabel housing232label = new JLabel(Integer.toString((int)SqlCon.getRangeSingleHousing()[1]));
+		housing232label.setHorizontalAlignment(SwingConstants.CENTER);
+		housing232label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		housing232label.setBackground(SystemColor.info);
+		housing232label.setForeground(new Color(70, 130, 180));
+		housing232label.setBounds(housingX + 300, housingY + 200, 100, 50);
+		housing232label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		housing232label.setOpaque(true);
+		
 		//x,y: (3,3)
-		JLabel housing33label = new JLabel("3,3");
+		JLabel housing33label = new JLabel(Integer.toString((int)SqlCon.getRangeApartmentHousing()[0]));
 		housing33label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing33label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing33label.setBackground(SystemColor.info);
 		housing33label.setForeground(new Color(70, 130, 180));
-		housing33label.setBounds(housingX + 300, housingY + 250, 100, 100);
+		housing33label.setBounds(housingX + 300, housingY + 250, 100, 50);
 		housing33label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		housing33label.setOpaque(true);
 		
+		//x,y: (3,3-2)
+		JLabel housing332label = new JLabel(Integer.toString((int)SqlCon.getRangeApartmentHousing()[1]));
+		housing332label.setHorizontalAlignment(SwingConstants.CENTER);
+		housing332label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		housing332label.setBackground(SystemColor.info);
+		housing332label.setForeground(new Color(70, 130, 180));
+		housing332label.setBounds(housingX + 300, housingY + 300, 100, 50);
+		housing332label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		housing332label.setOpaque(true);
+		
 		//x,y: (4,3)
-		JLabel housing43label = new JLabel("4,3");
+		JLabel housing43label = new JLabel(Integer.toString((int)SqlCon.getRangeHouseHousing()[0]));
 		housing43label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing43label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing43label.setBackground(SystemColor.info);
 		housing43label.setForeground(new Color(70, 130, 180));
-		housing43label.setBounds(housingX + 300, housingY + 350, 100, 100);
+		housing43label.setBounds(housingX + 300, housingY + 350, 100, 50);
 		housing43label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		housing43label.setOpaque(true);
 		
+		//x,y: (4,3-2)
+		JLabel housing432label = new JLabel(Integer.toString((int)SqlCon.getRangeHouseHousing()[1]));
+		housing432label.setHorizontalAlignment(SwingConstants.CENTER);
+		housing432label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		housing432label.setBackground(SystemColor.info);
+		housing432label.setForeground(new Color(70, 130, 180));
+		housing432label.setBounds(housingX + 300, housingY + 400, 100, 50);
+		housing432label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		housing432label.setOpaque(true);
+		
 		//x,y: (5,3)
-		JLabel housing53label = new JLabel("5,3");
+		JLabel housing53label = new JLabel(Integer.toString((int)SqlCon.getRangeHousing()[0]));
 		housing53label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing53label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing53label.setBackground(SystemColor.info);
 		housing53label.setForeground(new Color(70, 130, 180));
-		housing53label.setBounds(housingX + 300, housingY + 450, 100, 100);
+		housing53label.setBounds(housingX + 300, housingY + 450, 100, 50);
 		housing53label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		housing53label.setOpaque(true);
 		
+		//x,y: (5,3-2)
+		JLabel housing532label = new JLabel(Integer.toString((int)SqlCon.getRangeHousing()[1]));
+		housing532label.setHorizontalAlignment(SwingConstants.CENTER);
+		housing532label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
+		housing532label.setBackground(SystemColor.info);
+		housing532label.setForeground(new Color(70, 130, 180));
+		housing532label.setBounds(housingX + 300, housingY + 500, 100, 50);
+		housing532label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		housing532label.setOpaque(true);
+		
 		//x,y: (1,4)
-		JLabel housing14label = new JLabel("1,4");
+		JLabel housing14label = new JLabel(Double.toString(SqlCon.getAverageDoubleHousing()));
 		housing14label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing14label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing14label.setBackground(SystemColor.info);
@@ -618,7 +669,7 @@ public class LeavittApp {
 		housing14label.setOpaque(true);
 		
 		//x,y: (2,4)
-		JLabel housing24label = new JLabel("2,4");
+		JLabel housing24label = new JLabel(Double.toString(SqlCon.getAverageSingleHousing()));
 		housing24label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing24label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing24label.setBackground(SystemColor.info);
@@ -628,7 +679,7 @@ public class LeavittApp {
 		housing24label.setOpaque(true);
 		
 		//x,y: (3,4)
-		JLabel housing34label = new JLabel("3,4");
+		JLabel housing34label = new JLabel(Double.toString(SqlCon.getAverageApartmentHousing()));
 		housing34label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing34label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing34label.setBackground(SystemColor.info);
@@ -638,7 +689,7 @@ public class LeavittApp {
 		housing34label.setOpaque(true);
 		
 		//x,y: (4,4)
-		JLabel housing44label = new JLabel("4,4");
+		JLabel housing44label = new JLabel(Double.toString(SqlCon.getAverageHouseHousing()));
 		housing44label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing44label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing44label.setBackground(SystemColor.info);
@@ -648,7 +699,7 @@ public class LeavittApp {
 		housing44label.setOpaque(true);
 		
 		//x,y: (5,4)
-		JLabel housing54label = new JLabel("5,4");
+		JLabel housing54label = new JLabel(Double.toString(SqlCon.getAverageHousing()));
 		housing54label.setHorizontalAlignment(SwingConstants.CENTER);
 		housing54label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		housing54label.setBackground(SystemColor.info);
@@ -681,10 +732,15 @@ public class LeavittApp {
       	contentPanel.add(housing42label);
       	contentPanel.add(housing52label);
       	contentPanel.add(housing13label);
+      	contentPanel.add(housing132label);
       	contentPanel.add(housing23label);
+      	contentPanel.add(housing232label);
       	contentPanel.add(housing33label);
+      	contentPanel.add(housing332label);
       	contentPanel.add(housing43label);
+      	contentPanel.add(housing432label);
       	contentPanel.add(housing53label);
+      	contentPanel.add(housing532label);
       	contentPanel.add(housing14label);
       	contentPanel.add(housing24label);
       	contentPanel.add(housing34label);
@@ -726,7 +782,7 @@ public class LeavittApp {
 		totalCTabLabel.setOpaque(true);
 		
 		//Rows
-		JLabel gradeRLabel = new JLabel("Grade Range");
+		JLabel gradeRLabel = new JLabel("Counter");
 		gradeRLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		gradeRLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 16));
 		gradeRLabel.setBackground(SystemColor.activeCaption);
@@ -748,8 +804,7 @@ public class LeavittApp {
 		
 		//Data
 		//x,y: (1,1)
-		//JLabel customer11label = new JLabel(Integer.toString(SqlCon.getCountSingleR()));
-		JLabel customer11label = new JLabel("1,1");
+		JLabel customer11label = new JLabel(Integer.toString(SqlCon.getCountCurrentCustomer()));
 		customer11label.setHorizontalAlignment(SwingConstants.CENTER);
 		customer11label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		customer11label.setBackground(SystemColor.info);
@@ -757,9 +812,10 @@ public class LeavittApp {
 		customer11label.setBounds(customerX + 120, customerY + 50, 120, 100);
 		customer11label.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		customer11label.setOpaque(true);
+
 		
 		//x,y: (2,1)
-		JLabel customer21label = new JLabel("2,1");
+		JLabel customer21label = new JLabel(Double.toString(SqlCon.getAverageGradeCurrentCustomer()));
 		customer21label.setHorizontalAlignment(SwingConstants.CENTER);
 		customer21label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		customer21label.setBackground(SystemColor.info);
@@ -769,7 +825,7 @@ public class LeavittApp {
 		customer21label.setOpaque(true);
 		
 		//x,y: (1,2)
-		JLabel customer12label = new JLabel("1,2");
+		JLabel customer12label = new JLabel(Integer.toString(SqlCon.getCountAllCustomer()));
 		customer12label.setHorizontalAlignment(SwingConstants.CENTER);
 		customer12label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		customer12label.setBackground(SystemColor.info);
@@ -779,7 +835,7 @@ public class LeavittApp {
 		customer12label.setOpaque(true);
 		
 		//x,y: (2,2)
-		JLabel customer22label = new JLabel("2,2");
+		JLabel customer22label = new JLabel(Double.toString(SqlCon.getAverageGradeAllCustomer()));
 		customer22label.setHorizontalAlignment(SwingConstants.CENTER);
 		customer22label.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		customer22label.setBackground(SystemColor.info);
@@ -811,6 +867,7 @@ public class LeavittApp {
 		
 		refreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				homePage();
 				frame.repaint();
 			}
 		});
