@@ -20,13 +20,14 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.SystemColor;
 
 public class LeavittApp {
-	
+		
 	//Declare the frame and panels
 	JFrame frame;
 	JPanel navigationPanel;
@@ -124,6 +125,10 @@ public class LeavittApp {
 	static boolean customerAdd = false;
 	static boolean customerMod = false;
 	static boolean customerDel = false;
+	//Faded text
+	private static JLabel denied;
+	private static int alpha = 255;
+	private static int increment = -5;
 	
 	/**
 	 * @wbp.parser.entryPoint
@@ -1789,7 +1794,7 @@ public class LeavittApp {
 		
 		//Add to content panel
 		//Welcome
-		JLabel welcomeLabel = new JLabel("Welcome user,");
+		JLabel welcomeLabel = new JLabel("Welcome "+SqlCon.getEmployeeFullName());
 		welcomeLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		welcomeLabel.setFont(new Font("Dubai Medium", Font.BOLD, 40));
 		welcomeLabel.setForeground(SystemColor.activeCaption);
@@ -1803,7 +1808,8 @@ public class LeavittApp {
 		usernameLabel.setBounds(40, 120, 200, 50);
 		contentPanel.add(usernameLabel);
 		
-		JLabel usernameRLabel = new JLabel("admin");
+		int indexOfSeparation = Login.accountUsername.indexOf('@');
+		JLabel usernameRLabel = new JLabel(Login.accountUsername.substring(0, indexOfSeparation));
 		usernameRLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		usernameRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
 		usernameRLabel.setForeground(SystemColor.activeCaption);
@@ -1817,7 +1823,7 @@ public class LeavittApp {
 		dateBirthLabel.setBounds(40, 170, 200, 50);
 		contentPanel.add(dateBirthLabel);
 		
-		JLabel dateBirthRLabel = new JLabel("08/05/1983");
+		JLabel dateBirthRLabel = new JLabel(SqlCon.getEmployeeBirthday());
 		dateBirthRLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		dateBirthRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
 		dateBirthRLabel.setForeground(SystemColor.activeCaption);
@@ -1831,7 +1837,7 @@ public class LeavittApp {
 		positionLabel.setBounds(40, 220, 200, 50);
 		contentPanel.add(positionLabel);
 		
-		JLabel positionRLabel = new JLabel("Help Desk");
+		JLabel positionRLabel = new JLabel(SqlCon.getEmployeePosition());
 		positionRLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		positionRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
 		positionRLabel.setForeground(SystemColor.activeCaption);
@@ -1845,7 +1851,7 @@ public class LeavittApp {
 		phoneLabel.setBounds(40, 270, 200, 50);
 		contentPanel.add(phoneLabel);
 		
-		JLabel phoneRLabel = new JLabel("435-865-5214");
+		JLabel phoneRLabel = new JLabel(SqlCon.getEmployeePhone());
 		phoneRLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		phoneRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
 		phoneRLabel.setForeground(SystemColor.activeCaption);
@@ -1859,11 +1865,11 @@ public class LeavittApp {
 		emailLabel.setBounds(40, 320, 200, 50);
 		contentPanel.add(emailLabel);
 		
-		JLabel emailRLabel = new JLabel("admin@leavitt.com");
+		JLabel emailRLabel = new JLabel(SqlCon.getEmployeeEmail());
 		emailRLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		emailRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
+		emailRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 25));
 		emailRLabel.setForeground(SystemColor.activeCaption);
-		emailRLabel.setBounds(240, 320, 300, 50);
+		emailRLabel.setBounds(240, 320, 350, 50);
 		contentPanel.add(emailRLabel);
 		
 		//Reset password
@@ -1903,6 +1909,11 @@ public class LeavittApp {
 		newPass2.setBounds(250, 575, 150, 25);
 		contentPanel.add(newPass2);
 		
+		denied = new JLabel("");
+		denied.setBounds(400, 600, 110, 50);
+		denied.setForeground(new Color(255,0,0));
+		contentPanel.add(denied);
+		
 		//Cancel reset pass
       	JButton cancelButton = new JButton("Cancel");
       	cancelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
@@ -1931,12 +1942,50 @@ public class LeavittApp {
 		contentPanel.add(submitButton);
 		
 		submitButton.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				//Will save the new password for this person
-				//Will display flash text "wrong password" or "submitted"
+				//Will display flash text "wrong password"
+				
+				if(SqlCon.userExists(Login.accountUsername, oldPass.getText())) {
+					if(newPass.getText().contentEquals(newPass2.getText())) {
+						SqlCon.updatePassword(Login.accountUsername, newPass.getText());
+					}
+					else {
+						denied.setText("Not matching");
+						new Timer(100, new ActionListener() {
+							 public void actionPerformed(ActionEvent e) {
+							        alpha += increment;
+							        if (alpha <= 0) {
+							        	alpha = 0;
+							          denied.setText("");
+							        }
+							        denied.setForeground(new Color(255, 0, 0, alpha));
+							      }
+							    }).start();
+							alpha = 255;
+						}
+				}
+				else {
+					denied.setText("Wrong password");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					          denied.setText("");
+					        }
+					        denied.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+				}
+				
+				oldPass.setText("");
+				newPass.setText("");
+				newPass2.setText("");
 			}
 		});
-		
 		
 		//logout
       	JButton logOutButton = new JButton("Log out");

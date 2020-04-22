@@ -2,20 +2,56 @@
 import java.sql.*; 
 
 public class SqlCon {
+	/*
 	public static void main(String[] args) {
 		
 		try{  
 			Class.forName("com.mysql.jdbc.Driver");  
 			Connection con=DriverManager.getConnection(  
 			"jdbc:mysql://localhost:3306/leavitt_3100","root","DataFor2.0");
-			
-			//Test getCountAllHousing()
-			System.out.println(getCountAllHousing());
-			
 			con.close();  
 		}
 		catch(Exception e){ System.out.println(e);}  
 	} 
+	*/
+	 
+	//Update password
+	public static void updatePassword(String email, String password) {
+		// UPDATE Employee SET Pwd = "Amine" WHERE (Email = 'geraldthompson@email.com' and EmployeeID <> 0)
+		String query = "UPDATE Employee SET Pwd = '" + password + "' WHERE (Email = '" + email + "' AND EmployeeID <> 0)";	//EmployeeID <> 0 to circumvent safe update mode. 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			int rs = stmt.executeUpdate(query);
+			
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	//Verify user exists
+	public static boolean userExists(String email, String password) {
+		String query = "SELECT COUNT(*) FROM Employee WHERE Email = '" + email + "' AND Pwd = '" + password + "';";
+		int count = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				count = rs.getInt(1);
+			}
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		if (count == 0) return false;
+		return true; 
+	}
 	
 	// ######### Queries for Home page #########
 	
@@ -645,6 +681,117 @@ public class SqlCon {
 	// 
 	
 	
+	// ######### Queries for Account page #########
+	
+	// Get the full name of the employee
+	public static String getEmployeeFullName() {
+		String query = "SELECT FirstName FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String name = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				name = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return name;
+	}
+	
+	// Get the birthday of the employee
+	public static String getEmployeeBirthday() {
+		String query = "SELECT DoB FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String name = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				name = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return name;
+	}
+	
+	// Get the position of the employee
+	public static String getEmployeePosition() {
+		String query = "SELECT Position FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String name = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				name = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return name;
+	}
+	
+	// Get the phone number of the employee
+	public static String getEmployeePhone() {
+		String query = "SELECT Phone FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String name = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				name = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return name;
+	}
+	
+	// Get the email of the employee
+	public static String getEmployeeEmail() {
+		String query = "SELECT Email FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String name = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				name = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return name;
+	}
 	
 }
 

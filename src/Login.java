@@ -27,9 +27,10 @@ public class Login implements ActionListener{
 	private static JButton logButton;
 	private static JButton resetButton;
 	private static JLabel denied;
-	private static Scanner sc;
 	private static int alpha = 255;
 	private static int increment = -5;
+	
+	public static String accountUsername = "";
 	
 	public static void main(String [] args){
 		
@@ -103,7 +104,8 @@ public class Login implements ActionListener{
 				String user = userText.getText();
 				@SuppressWarnings("deprecation")
 				String password = passwordText.getText();
-				if(loginVerification(user, password)) {
+				if(isValidUser(user, password)) {
+					accountUsername = user;
 					denied.setText("");
 					frame.setVisible(false);
 					new LeavittApp();
@@ -138,6 +140,11 @@ public class Login implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 	}
 	
+	private static boolean isValidUser(String username, String password) {
+		return SqlCon.userExists(username, password);
+	}
+	
+	/*
 	public static boolean loginVerification(String username, String password) {
 		boolean found = false;
 		String tempUsername = "";
@@ -162,4 +169,5 @@ public class Login implements ActionListener{
 		}
 		return found;
 	}
+	*/
 }
