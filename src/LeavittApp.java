@@ -70,6 +70,8 @@ public class LeavittApp {
 	static JTextField numOfRoomsText;
 	static JLabel numOfBathroomsLabel;
 	static JTextField numOfBathroomsText;
+	static JLabel vacantLabel;
+	static JTextField vacantText;
 	static JButton confirmHousingAddButton;
 	static JButton confirmHousingModButton;
 	static JButton confirmHousingDelButton;
@@ -113,6 +115,8 @@ public class LeavittApp {
 	static JLabel unpaidCountInfoText;
 	static JLabel customerGradeLabel;
 	static JLabel customerGradeInfoText;
+	static JTextField customerIDVal;
+	static JLabel customerIDFindLabel;
 	
 	//Declare variables
 	//Admin
@@ -125,8 +129,11 @@ public class LeavittApp {
 	static boolean customerAdd = false;
 	static boolean customerMod = false;
 	static boolean customerDel = false;
+	
 	//Faded text
-	private static JLabel denied;
+	private static JLabel denied; // Acount page
+	private static JLabel failure; // Admin page
+	private static JLabel notFound; // Client Page
 	private static int alpha = 255;
 	private static int increment = -5;
 	
@@ -1152,28 +1159,28 @@ public class LeavittApp {
 					if(housingBool && housingMod) {
 						removeStuff();
 						addSearch();
-						displayHousingModifier(0);
+						displayHousingModifier(idText.getText());
 						contentPanel.revalidate();
 						contentPanel.repaint();
 					}
 					else if(housingBool && housingDel) {
 						removeStuff();
 						addSearch();
-						displayHousingDeleter(0);
+						displayHousingDeleter(idText.getText());
 						contentPanel.revalidate();
 						contentPanel.repaint();
 					}
 					else if(customerBool && customerMod) {
 						removeStuff();
 						addSearch();
-						displayCustomerModifier(0);
+						displayCustomerModifier(idText.getText());
 						contentPanel.revalidate();
 						contentPanel.repaint();
 					}
 					else if(customerBool && customerDel) {
 						removeStuff();
 						addSearch();
-						displayCustomerDeleter(0);
+						displayCustomerDeleter(idText.getText());
 						contentPanel.revalidate();
 						contentPanel.repaint();
 					}
@@ -1264,18 +1271,51 @@ public class LeavittApp {
 		numOfBathroomsText.setForeground(SystemColor.BLACK);
 		numOfBathroomsText.setBounds(housingAddX + 160, housingAddY + 360, housingAddWidth, housingAddHeight);
 		
+		vacantLabel = new JLabel("Vacant: ");
+		vacantLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		vacantLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 22));
+		vacantLabel.setForeground(new Color(0, 0, 0));
+		vacantLabel.setBounds(housingAddX, housingAddY + 420, 150, 60);
+		
+		vacantText = new JTextField();
+		vacantText.setHorizontalAlignment(SwingConstants.CENTER);
+		vacantText.setFont(new Font("Dubai Medium", Font.PLAIN, 18));
+		vacantText.setForeground(SystemColor.BLACK);
+		vacantText.setBounds(housingAddX + 160, housingAddY + 430, housingAddWidth, housingAddHeight);
+		
+		failure = new JLabel("");
+		failure.setBounds(housingAddX + 170, housingAddY + 560, housingAddWidth, housingAddHeight);
+		failure.setForeground(new Color(255,0,0));
+		contentPanel.add(failure);
+		
 		confirmHousingAddButton = new JButton("Add");
 		confirmHousingAddButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		confirmHousingAddButton.setBackground(new Color(63, 150, 63));
 		confirmHousingAddButton.setForeground(SystemColor.WHITE);
-		confirmHousingAddButton.setBounds(housingAddX + 160, housingAddY + 435, housingAddWidth, housingAddHeight + 10);
+		confirmHousingAddButton.setBounds(housingAddX + 160, housingAddY + 505, housingAddWidth, housingAddHeight + 10);
 		confirmHousingAddButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
 		confirmHousingAddButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
-				// otherwise, add successful, clear the textfields
-				frame.repaint();
+				if (SqlCon.createHousing(housingIDText.getText(), addressText.getText(), typeText.getText(), rentPriceText.getText(), numOfRoomsText.getText(), numOfBathroomsText.getText())) {
+					addHousingAdd();
+					frame.repaint();
+				}
+				else {
+					failure.setText("Failure");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	failure.setText("");
+					        }
+					        failure.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+				}	
 			}
 		});
 		
@@ -1283,14 +1323,30 @@ public class LeavittApp {
 		confirmHousingModButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		confirmHousingModButton.setBackground(new Color(245, 181, 46));
 		confirmHousingModButton.setForeground(SystemColor.WHITE);
-		confirmHousingModButton.setBounds(housingAddX + 160, housingAddY + 435, housingAddWidth, housingAddHeight + 10);
+		confirmHousingModButton.setBounds(housingAddX + 160, housingAddY + 505, housingAddWidth, housingAddHeight + 10);
 		confirmHousingModButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
 		confirmHousingModButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
-				// otherwise, add successful, clear the textfields
-				frame.repaint();
+				if (SqlCon.updateHousing(idText.getText(), housingIDText.getText(), addressText.getText(), typeText.getText(), rentPriceText.getText(), numOfRoomsText.getText(), numOfBathroomsText.getText(), vacantText.getText())) {
+					clearHousingModifier();
+					frame.repaint();
+				}
+				else {
+					failure.setText("Failure");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	failure.setText("");
+					        }
+					        failure.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+				}
 			}
 		});
 		
@@ -1298,14 +1354,30 @@ public class LeavittApp {
 		confirmHousingDelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		confirmHousingDelButton.setBackground(new Color(153, 0, 0));
 		confirmHousingDelButton.setForeground(SystemColor.WHITE);
-		confirmHousingDelButton.setBounds(housingAddX + 160, housingAddY + 435, housingAddWidth, housingAddHeight + 10);
+		confirmHousingDelButton.setBounds(housingAddX + 160, housingAddY + 505, housingAddWidth, housingAddHeight + 10);
 		confirmHousingDelButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
 		confirmHousingDelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
-				// otherwise, add successful, clear the textfields
-				frame.repaint();
+				if (SqlCon.deleteHousing(idText.getText())) {
+					clearHousingDeleter();
+					frame.repaint();
+				}
+				else {
+					failure.setText("Failure");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	failure.setText("");
+					        }
+					        failure.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+				}
 			}
 		});
 		
@@ -1397,8 +1469,26 @@ public class LeavittApp {
 		confirmCustomerAddButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
-				// otherwise, add successful, clear the textfields
-				frame.repaint();
+				if (SqlCon.createCustomer(customerIDText.getText(), firstNameText.getText(), lastNameText.getText(), dateBirthText.getText(), phoneText.getText(), emailText.getText())) {
+					addCustomerAdd();
+					frame.repaint();
+				}
+				else {
+					failure.setText("Failure");
+					failure.setBounds(customerAddX + 170, customerAddY + 505, customerAddWidth, customerAddHeight + 10);
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	failure.setText("");
+					        }
+					        failure.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+					failure.setBounds(customerAddX + 170, customerAddY + 560, customerAddWidth, customerAddHeight + 10);
+				}	
 			}
 		});
 		
@@ -1412,12 +1502,30 @@ public class LeavittApp {
 		confirmCustomerModButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
-				// otherwise, add successful, clear the textfields
-				frame.repaint();
+				if (SqlCon.updateCustomer(idText.getText(), customerIDText.getText(), firstNameText.getText(), lastNameText.getText(), dateBirthText.getText(), phoneText.getText(), emailText.getText())) {
+					clearCustomerModifier();
+					frame.repaint();
+				}
+				else {
+					failure.setText("Failure");
+					failure.setBounds(customerAddX + 170, customerAddY + 505, customerAddWidth, customerAddHeight + 10);
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	failure.setText("");
+					        }
+					        failure.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+					failure.setBounds(customerAddX + 170, customerAddY + 560, customerAddWidth, customerAddHeight + 10);
+				}
 			}
 		});
 		
-		confirmCustomerDelButton = new JButton("Add");
+		confirmCustomerDelButton = new JButton("Delete");
 		confirmCustomerDelButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		confirmCustomerDelButton.setBackground(new Color(153, 0, 0));
 		confirmCustomerDelButton.setForeground(SystemColor.WHITE);
@@ -1427,8 +1535,26 @@ public class LeavittApp {
 		confirmCustomerDelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
-				// otherwise, add successful, clear the textfields
-				frame.repaint();
+				if (SqlCon.deleteCustomer(idText.getText())) {
+					clearCustomerDeleter();
+					frame.repaint();
+				}
+				else {
+					failure.setText("Failure");
+					failure.setBounds(customerAddX + 170, customerAddY + 505, customerAddWidth, customerAddHeight + 10);
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	failure.setText("");
+					        }
+					        failure.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+					failure.setBounds(customerAddX + 170, customerAddY + 560, customerAddWidth, customerAddHeight + 10);
+				}
 			}
 		});
 
@@ -1601,7 +1727,7 @@ public class LeavittApp {
 		contentPanel.removeAll();
 		
 		//Add to content panel
-		JLabel customerIDFindLabel = new JLabel("Customer ID: ");
+		customerIDFindLabel = new JLabel("Customer ID: ");
 		customerIDFindLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		customerIDFindLabel.setFont(new Font("Dubai Medium", Font.BOLD, 20));
 		customerIDFindLabel.setBackground(SystemColor.activeCaption);
@@ -1611,7 +1737,7 @@ public class LeavittApp {
 		customerIDFindLabel.setOpaque(true);
 		contentPanel.add(customerIDFindLabel);
 		
-		JTextField customerIDVal = new JTextField();
+		customerIDVal = new JTextField("");
 		customerIDVal.setHorizontalAlignment(SwingConstants.CENTER);
 		customerIDVal.setFont(new Font("Dubai Medium", Font.BOLD, 16));
 		customerIDVal.setBackground(SystemColor.WHITE);
@@ -1633,7 +1759,7 @@ public class LeavittApp {
 		firstNameLabel.setBounds(customerAddX, customerAddY, 150, customerAddHeight);
 		firstNameLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
-		firstNameInfoText = new JLabel("Test");
+		firstNameInfoText = new JLabel("");
 		firstNameInfoText.setHorizontalAlignment(SwingConstants.CENTER);
 		firstNameInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
 		firstNameInfoText.setBackground(SystemColor.activeCaption);
@@ -1763,12 +1889,17 @@ public class LeavittApp {
 		
 		customerGradeInfoText = new JLabel("");
 		customerGradeInfoText.setHorizontalAlignment(SwingConstants.CENTER);
-		customerGradeInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 16));
+		customerGradeInfoText.setFont(new Font("Dubai Medium", Font.BOLD, 60));
 		customerGradeInfoText.setBackground(SystemColor.activeCaption);
 		customerGradeInfoText.setForeground(SystemColor.WHITE);
 		customerGradeInfoText.setBounds(2*customerAddX + 130 + customerAddWidth, customerAddY + 370, 420, 110);
 		customerGradeInfoText.setOpaque(true);
 		customerGradeInfoText.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		
+		notFound = new JLabel("");
+		notFound.setBounds(870, 120, 90, 30);
+		notFound.setForeground(new Color(255,0,0));
+		contentPanel.add(notFound);
 		
 		goClientButton = new JButton("GO");
 		goClientButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
@@ -1782,8 +1913,24 @@ public class LeavittApp {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
 				// otherwise, add successful, clear the textfields
-				displayCustomerSheet();
-				frame.repaint();
+				if(SqlCon.customerExists(customerIDVal.getText())) {
+					displayCustomerSheet(customerIDVal.getText());
+					frame.repaint();
+				}
+				else {
+					notFound.setText("Not found");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	notFound.setText("");
+					        }
+					        notFound.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+				}
 			}
 		});
 		
@@ -1807,9 +1954,8 @@ public class LeavittApp {
 		usernameLabel.setFont(new Font("Dubai Medium", Font.PLAIN, 25));
 		usernameLabel.setBounds(40, 120, 200, 50);
 		contentPanel.add(usernameLabel);
-		
-		int indexOfSeparation = Login.accountUsername.indexOf('@');
-		JLabel usernameRLabel = new JLabel(Login.accountUsername.substring(0, indexOfSeparation));
+
+		JLabel usernameRLabel = new JLabel(Login.accountUsername);
 		usernameRLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		usernameRLabel.setFont(new Font("Dubai Medium", Font.BOLD, 35));
 		usernameRLabel.setForeground(SystemColor.activeCaption);
@@ -2195,39 +2341,84 @@ public class LeavittApp {
 	}
 
 	//displayHousingModifier() method
-	public static void displayHousingModifier(int housingID) {
+	public static void displayHousingModifier(String idText) {
 		contentPanel.add(housingIDLabel);
-		housingIDText.setText("id number");
+		housingIDText.setText(idText);
 		housingIDText.setEditable(true);
 		contentPanel.add(housingIDText);
 
 		contentPanel.add(addressLabel);
-		addressText.setText("address");
+		addressText.setText(SqlCon.getHousingAddress(idText));
 		addressText.setEditable(true);
 		contentPanel.add(addressText);
 
 		contentPanel.add(typeLabel);
-		typeText.setText("type");
+		typeText.setText(SqlCon.getHousingRoomType(idText));
 		typeText.setEditable(true);
 		contentPanel.add(typeText);
 
 		contentPanel.add(rentPriceLabel);
-		rentPriceText.setText("price");
+		rentPriceText.setText(SqlCon.getHousingRentPrice(idText));
 		rentPriceText.setEditable(true);
 		contentPanel.add(rentPriceText);
 
 		contentPanel.add(numOfRoomsLabel);
-		numOfRoomsText.setText("num rooms");
+		numOfRoomsText.setText(SqlCon.getHousingNumOfRooms(idText));
 		numOfRoomsText.setEditable(true);
 		contentPanel.add(numOfRoomsText);
 		
 		contentPanel.add(numOfBathroomsLabel);
-		numOfBathroomsText.setText("num baths");
+		numOfBathroomsText.setText(SqlCon.getHousingNumOfBathrooms(idText));
 		numOfBathroomsText.setEditable(true);
 		contentPanel.add(numOfBathroomsText);
 		
+		contentPanel.add(vacantLabel);
+		vacantText.setText(SqlCon.getHousingVacant(idText));
+		vacantText.setEditable(true);
+		contentPanel.add(vacantText);
+		
 		contentPanel.add(confirmHousingModButton);
 		
+	}
+	
+	//ClearHousingModifier() method
+	public static void clearHousingModifier() {
+		contentPanel.add(housingIDLabel);
+		housingIDText.setText("");
+		housingIDText.setEditable(true);
+		contentPanel.add(housingIDText);
+
+		contentPanel.add(addressLabel);
+		addressText.setText("");
+		addressText.setEditable(true);
+		contentPanel.add(addressText);
+
+		contentPanel.add(typeLabel);
+		typeText.setText("");
+		typeText.setEditable(true);
+		contentPanel.add(typeText);
+
+		contentPanel.add(rentPriceLabel);
+		rentPriceText.setText("");
+		rentPriceText.setEditable(true);
+		contentPanel.add(rentPriceText);
+
+		contentPanel.add(numOfRoomsLabel);
+		numOfRoomsText.setText("");
+		numOfRoomsText.setEditable(true);
+		contentPanel.add(numOfRoomsText);
+		
+		contentPanel.add(numOfBathroomsLabel);
+		numOfBathroomsText.setText("");
+		numOfBathroomsText.setEditable(true);
+		contentPanel.add(numOfBathroomsText);
+		
+		contentPanel.add(vacantLabel);
+		vacantText.setText("");
+		vacantText.setEditable(true);
+		contentPanel.add(vacantText);
+		
+		contentPanel.add(confirmHousingDelButton);
 	}
 	
 	//Remove Housing Modifier
@@ -2244,40 +2435,87 @@ public class LeavittApp {
 		contentPanel.remove(numOfRoomsText);
 		contentPanel.remove(numOfBathroomsLabel);
 		contentPanel.remove(numOfBathroomsText);
+		contentPanel.remove(vacantLabel);
+		contentPanel.remove(vacantText);
 		contentPanel.remove(confirmHousingModButton);
 	}
 
 	//displayHousingDeleter() method
-	public static void displayHousingDeleter(int housingID) {
+	public static void displayHousingDeleter(String idText) {
 		contentPanel.add(housingIDLabel);
-		housingIDText.setText("id number");
+		housingIDText.setText(idText);
 		housingIDText.setEditable(false);
 		contentPanel.add(housingIDText);
 
 		contentPanel.add(addressLabel);
-		addressText.setText("address");
+		addressText.setText(SqlCon.getHousingAddress(idText));
 		addressText.setEditable(false);
 		contentPanel.add(addressText);
 
 		contentPanel.add(typeLabel);
-		typeText.setText("type");
+		typeText.setText(SqlCon.getHousingRoomType(idText));
 		typeText.setEditable(false);
 		contentPanel.add(typeText);
 
 		contentPanel.add(rentPriceLabel);
-		rentPriceText.setText("price");
+		rentPriceText.setText(SqlCon.getHousingRentPrice(idText));
 		rentPriceText.setEditable(false);
 		contentPanel.add(rentPriceText);
 
 		contentPanel.add(numOfRoomsLabel);
-		numOfRoomsText.setText("num rooms");
+		numOfRoomsText.setText(SqlCon.getHousingNumOfRooms(idText));
 		numOfRoomsText.setEditable(false);
 		contentPanel.add(numOfRoomsText);
 		
 		contentPanel.add(numOfBathroomsLabel);
-		numOfBathroomsText.setText("num baths");
+		numOfBathroomsText.setText(SqlCon.getHousingNumOfBathrooms(idText));
 		numOfBathroomsText.setEditable(false);
 		contentPanel.add(numOfBathroomsText);
+		
+		contentPanel.add(vacantLabel);
+		vacantText.setText(SqlCon.getHousingVacant(idText));
+		vacantText.setEditable(false);
+		contentPanel.add(vacantText);
+		
+		contentPanel.add(confirmHousingDelButton);
+	}
+	
+	//ClearHousingDeleter() method
+	public static void clearHousingDeleter() {
+		contentPanel.add(housingIDLabel);
+		housingIDText.setText("");
+		housingIDText.setEditable(false);
+		contentPanel.add(housingIDText);
+
+		contentPanel.add(addressLabel);
+		addressText.setText("");
+		addressText.setEditable(false);
+		contentPanel.add(addressText);
+
+		contentPanel.add(typeLabel);
+		typeText.setText("");
+		typeText.setEditable(false);
+		contentPanel.add(typeText);
+
+		contentPanel.add(rentPriceLabel);
+		rentPriceText.setText("");
+		rentPriceText.setEditable(false);
+		contentPanel.add(rentPriceText);
+
+		contentPanel.add(numOfRoomsLabel);
+		numOfRoomsText.setText("");
+		numOfRoomsText.setEditable(false);
+		contentPanel.add(numOfRoomsText);
+		
+		contentPanel.add(numOfBathroomsLabel);
+		numOfBathroomsText.setText("");
+		numOfBathroomsText.setEditable(false);
+		contentPanel.add(numOfBathroomsText);
+		
+		contentPanel.add(vacantLabel);
+		vacantText.setText("");
+		vacantText.setEditable(false);
+		contentPanel.add(vacantText);
 		
 		contentPanel.add(confirmHousingDelButton);
 	}
@@ -2296,6 +2534,8 @@ public class LeavittApp {
 		contentPanel.remove(numOfRoomsText);
 		contentPanel.remove(numOfBathroomsLabel);
 		contentPanel.remove(numOfBathroomsText);
+		contentPanel.remove(vacantLabel);
+		contentPanel.remove(vacantText);
 		contentPanel.remove(confirmHousingDelButton);
 
 	}
@@ -2354,34 +2594,69 @@ public class LeavittApp {
 		
 	
 	//displayCustomerModifier() method
-	public static void displayCustomerModifier(int customerID) {
+	public static void displayCustomerModifier(String idText) {
 		contentPanel.add(customerIDLabel);
-		customerIDText.setText("id num");
+		customerIDText.setText(idText);
 		customerIDText.setEditable(true);
 		contentPanel.add(customerIDText);
 		
 		contentPanel.add(firstNameLabel);
-		firstNameText.setText("first name");
+		firstNameText.setText(SqlCon.getCustomerFirstName(idText));
 		firstNameText.setEditable(true);
 		contentPanel.add(firstNameText);
 		
 		contentPanel.add(lastNameLabel);
-		lastNameText.setText("last name");
+		lastNameText.setText(SqlCon.getCustomerLastName(idText));
 		lastNameText.setEditable(true);
 		contentPanel.add(lastNameText);
 		
 		contentPanel.add(dateBirthLabel);
-		dateBirthText.setText("birthday");
+		dateBirthText.setText(SqlCon.getCustomerDoB(idText));
 		dateBirthText.setEditable(true);
 		contentPanel.add(dateBirthText);
 		
 		contentPanel.add(phoneLabel);
-		phoneText.setText("phone");
+		phoneText.setText(SqlCon.getCustomerPhone(idText));
 		phoneText.setEditable(true);
 		contentPanel.add(phoneText);
 		
 		contentPanel.add(emailLabel);
-		emailText.setText("email");
+		emailText.setText(SqlCon.getCustomerEmail(idText));
+		emailText.setEditable(true);
+		contentPanel.add(emailText);
+		
+		contentPanel.add(confirmCustomerModButton);
+	}
+	
+	//clearCustomerModifier() method
+	public static void clearCustomerModifier() {
+		contentPanel.add(customerIDLabel);
+		customerIDText.setText("");
+		customerIDText.setEditable(true);
+		contentPanel.add(customerIDText);
+		
+		contentPanel.add(firstNameLabel);
+		firstNameText.setText("");
+		firstNameText.setEditable(true);
+		contentPanel.add(firstNameText);
+		
+		contentPanel.add(lastNameLabel);
+		lastNameText.setText("");
+		lastNameText.setEditable(true);
+		contentPanel.add(lastNameText);
+		
+		contentPanel.add(dateBirthLabel);
+		dateBirthText.setText("");
+		dateBirthText.setEditable(true);
+		contentPanel.add(dateBirthText);
+		
+		contentPanel.add(phoneLabel);
+		phoneText.setText("");
+		phoneText.setEditable(true);
+		contentPanel.add(phoneText);
+		
+		contentPanel.add(emailLabel);
+		emailText.setText("");
 		emailText.setEditable(true);
 		contentPanel.add(emailText);
 		
@@ -2406,34 +2681,69 @@ public class LeavittApp {
 	}
 	
 	//displayCustomerDeleter() method
-	public static void displayCustomerDeleter(int customerID) {
+	public static void displayCustomerDeleter(String idText) {
 		contentPanel.add(customerIDLabel);
-		customerIDText.setText("id num");
+		customerIDText.setText(idText);
 		customerIDText.setEditable(false);
 		contentPanel.add(customerIDText);
 		
 		contentPanel.add(firstNameLabel);
-		firstNameText.setText("first name");
+		firstNameText.setText(SqlCon.getCustomerFirstName(idText));
 		firstNameText.setEditable(false);
 		contentPanel.add(firstNameText);
 		
 		contentPanel.add(lastNameLabel);
-		lastNameText.setText("last name");
+		lastNameText.setText(SqlCon.getCustomerLastName(idText));
 		lastNameText.setEditable(false);
 		contentPanel.add(lastNameText);
 		
 		contentPanel.add(dateBirthLabel);
-		dateBirthText.setText("birthday");
+		dateBirthText.setText(SqlCon.getCustomerDoB(idText));
 		dateBirthText.setEditable(false);
 		contentPanel.add(dateBirthText);
 		
 		contentPanel.add(phoneLabel);
-		phoneText.setText("phone");
+		phoneText.setText(SqlCon.getCustomerPhone(idText));
 		phoneText.setEditable(false);
 		contentPanel.add(phoneText);
 		
 		contentPanel.add(emailLabel);
-		emailText.setText("email");
+		emailText.setText(SqlCon.getCustomerEmail(idText));
+		emailText.setEditable(false);
+		contentPanel.add(emailText);
+		
+		contentPanel.add(confirmCustomerDelButton);
+	}
+	
+	//clearCustomerDeleter() method
+	public static void clearCustomerDeleter() {
+		contentPanel.add(customerIDLabel);
+		customerIDText.setText("");
+		customerIDText.setEditable(false);
+		contentPanel.add(customerIDText);
+		
+		contentPanel.add(firstNameLabel);
+		firstNameText.setText("");
+		firstNameText.setEditable(false);
+		contentPanel.add(firstNameText);
+		
+		contentPanel.add(lastNameLabel);
+		lastNameText.setText("");
+		lastNameText.setEditable(false);
+		contentPanel.add(lastNameText);
+		
+		contentPanel.add(dateBirthLabel);
+		dateBirthText.setText("");
+		dateBirthText.setEditable(false);
+		contentPanel.add(dateBirthText);
+		
+		contentPanel.add(phoneLabel);
+		phoneText.setText("");
+		phoneText.setEditable(false);
+		contentPanel.add(phoneText);
+		
+		contentPanel.add(emailLabel);
+		emailText.setText("");
 		emailText.setEditable(false);
 		contentPanel.add(emailText);
 		
@@ -2474,25 +2784,42 @@ public class LeavittApp {
 	}
 	
 	//displayCustomer
-	public static void displayCustomerSheet() {
+	public static void displayCustomerSheet(String customerID) {
 		//If valid query, then
 		contentPanel.add(firstNameLabel);
+		firstNameInfoText.setText(SqlCon.getCustomerFirstName(customerID));
 		contentPanel.add(firstNameInfoText);
+		
 		contentPanel.add(lastNameLabel);
+		lastNameInfoText.setText(SqlCon.getCustomerLastName(customerID));
 		contentPanel.add(lastNameInfoText);
+		
 		contentPanel.add(dateBirthLabel);
+		dateBirthInfoText.setText(SqlCon.getCustomerDoB(customerID));
 		contentPanel.add(dateBirthInfoText);
+		
 		contentPanel.add(phoneLabel);
+		phoneInfoText.setText(SqlCon.getCustomerPhone(customerID));
 		contentPanel.add(phoneInfoText);
+		
 		contentPanel.add(emailLabel);
+		emailInfoText.setText(SqlCon.getCustomerEmail(customerID));
 		contentPanel.add(emailInfoText);
+		
 		contentPanel.add(customerSinceLabel);
+		customerSinceInfoText.setText(SqlCon.getCustomerRegisteredSince(customerID));
 		contentPanel.add(customerSinceInfoText);
+		
 		contentPanel.add(complaintsCountLabel);
+		complaintsCountInfoText.setText(SqlCon.getCustomerComplaintsNum(customerID));
 		contentPanel.add(complaintsCountInfoText);
+		
 		contentPanel.add(unpaidCountLabel);
+		unpaidCountInfoText.setText(SqlCon.getCustomerUnpaidsNum(customerID));
 		contentPanel.add(unpaidCountInfoText);
+		
 		contentPanel.add(customerGradeLabel);
+		customerGradeInfoText.setText(SqlCon.getCustomerGrade(customerID));
 		contentPanel.add(customerGradeInfoText);
 		
 	}
