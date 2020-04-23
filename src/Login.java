@@ -143,31 +143,4 @@ public class Login implements ActionListener{
 	private static boolean isValidUser(String username, String password) {
 		return SqlCon.userExists(username, password);
 	}
-	
-	/*
-	public static boolean loginVerification(String username, String password) {
-		boolean found = false;
-		String tempUsername = "";
-		String tempPassword = "";
-		
-		try {
-			sc = new Scanner(new File("src/loginSec.txt"));
-			sc.useDelimiter("[,\n]");
-			
-			while(sc.hasNext() && !found) {
-				tempUsername = sc.next();
-				tempPassword = sc.next();
-				
-				if(tempUsername.trim().equals(username.trim()) && tempPassword.trim().contentEquals(password.trim())) {
-					found = true;
-				} 
-			}
-			sc.close();
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
-		return found;
-	}
-	*/
 }

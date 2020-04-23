@@ -1,5 +1,7 @@
 
-import java.sql.*; 
+import java.sql.*;
+
+import javax.swing.JLabel; 
 
 public class SqlCon {
 	/*
@@ -17,7 +19,6 @@ public class SqlCon {
 	 
 	//Update password
 	public static void updatePassword(String email, String password) {
-		// UPDATE Employee SET Pwd = "Amine" WHERE (Email = 'geraldthompson@email.com' and EmployeeID <> 0)
 		String query = "UPDATE Employee SET Pwd = '" + password + "' WHERE (Email = '" + email + "' AND EmployeeID <> 0)";	//EmployeeID <> 0 to circumvent safe update mode. 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -33,7 +34,8 @@ public class SqlCon {
 	
 	//Verify user exists
 	public static boolean userExists(String email, String password) {
-		String query = "SELECT COUNT(*) FROM Employee WHERE Email = '" + email + "' AND Pwd = '" + password + "';";
+		String emailFull = email + "@email.com";
+		String query = "SELECT COUNT(*) FROM Employee WHERE Email = '" + emailFull + "' AND Pwd = '" + password + "';";
 		int count = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -677,15 +679,477 @@ public class SqlCon {
 	// ######### Queries for Admin page #########
 	
 	// ##### For Housing table ##### --> All get are based on HousingID
+	// Create new Housing
+	public static boolean createHousing(String housingID, String address, String roomType, String rentPrice, String numOfRooms, String numOfBathrooms) {
+		if(housingID.equals("")) {
+			return false;
+		}
+		String query = "INSERT INTO Housing(HousingID, Address, RoomType, RentPrice, NumOfRooms, NumOfBathrooms, Vacant) VALUES ("+Integer.parseInt(housingID)+", '"+address+"', '"+roomType+"', "+Integer.parseInt(rentPrice)+", "+Integer.parseInt(numOfRooms)+", "+Integer.parseInt(numOfBathrooms)+", TRUE);";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+	// Update Housing
+	public static boolean updateHousing(String searchID, String housingID, String address, String roomType, String rentPrice, String numOfRooms, String numOfBathrooms, String vacant) {
+		if(housingID.equals("")) {
+			return false;
+		}
+		String query = "UPDATE Housing SET HousingID = "+Integer.parseInt(housingID)+", Address = '"+address+"', RoomType = '"+roomType+"', RentPrice = "+Integer.parseInt(rentPrice)+", NumOfRooms = "+Integer.parseInt(numOfRooms)+", NumOfBathrooms = "+Integer.parseInt(numOfBathrooms)+", Vacant = '"+vacant.toUpperCase()+"' WHERE HousingID = "+Integer.parseInt(searchID)+";";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
 	
-	// 
+	// Delete Housing
+	public static boolean deleteHousing(String searchID) {
+		String query = "DELETE FROM Housing WHERE HousingID = "+Integer.parseInt(searchID)+";";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
 	
+	// Getters
+	// Get Housing address
+	public static String getHousingAddress(String searchID) {
+		String query = "SELECT Address FROM Housing WHERE HousingID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get Housing Room Type
+	public static String getHousingRoomType(String searchID) {
+		String query = "SELECT RoomType FROM Housing WHERE HousingID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get Housing Rent Price
+	public static String getHousingRentPrice(String searchID) {
+		String query = "SELECT RentPrice FROM Housing WHERE HousingID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get Housing Num Of Bathrooms
+	public static String getHousingNumOfBathrooms(String searchID) {
+		String query = "SELECT NumOfBathrooms FROM Housing WHERE HousingID = "+ searchID +";";
+		int r = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getInt(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return Integer.toString(r);
+	}
+	
+	// Get Housing Num Of Rooms
+	public static String getHousingNumOfRooms(String searchID) {
+		String query = "SELECT NumOfRooms FROM Housing WHERE HousingID = "+ searchID +";";
+		int r = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getInt(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return Integer.toString(r);
+	}
+	
+	// Get Housing Vacant
+	public static String getHousingVacant(String searchID) {
+		String query = "SELECT Vacant FROM Housing WHERE HousingID = "+searchID+";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return r;
+	}
+	
+	
+	// ##### For Customer table ##### --> All get are based on CustomerID
+	// Create new Customer
+	public static boolean createCustomer(String CustomerID, String FirstName, String LastName, String DoB, String Phone, String Email) {
+		if(CustomerID.equals("")) {
+			return false;
+		}
+		String query = "INSERT INTO Customer(CustomerID, FirstName, LastName, DoB, Grade, Phone, Email, DateRegistered) VALUES ("+Integer.parseInt(CustomerID)+", '"+FirstName+"', '"+LastName+"', '"+DoB+"', 5,'"+Phone+"', '"+Email+"', current_date());";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+	// Update Customer
+	public static boolean updateCustomer(String searchID, String customerID, String firstName, String lastName, String doB, String phone, String email) {
+		if(customerID.equals("")) {
+			return false;
+		}
+		String query = "UPDATE Customer SET CustomerID = "+Integer.parseInt(customerID)+", FirstName = '"+firstName+"', LastName = '"+lastName+"', DoB = '"+doB+"', Phone = '"+phone+"', Email = '"+email+"' WHERE CustomerID = "+Integer.parseInt(searchID)+";";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+	
+	// Delete Customer
+	public static boolean deleteCustomer(String searchID) {
+		String query = "DELETE FROM Customer WHERE CustomerID = "+Integer.parseInt(searchID)+";";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		return true;
+	}
+	
+	// Getters
+	// Get Customer First Name
+	public static String getCustomerFirstName(String searchID) {
+		String query = "SELECT FirstName FROM Customer WHERE CustomerID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get Customer Last Name
+	public static String getCustomerLastName(String searchID) {
+		String query = "SELECT LastName FROM Customer WHERE CustomerID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get Customer DoB
+	public static String getCustomerDoB(String searchID) {
+		String query = "SELECT DoB FROM Customer WHERE CustomerID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get Customer Phone
+	public static String getCustomerPhone(String searchID) {
+		String query = "SELECT Phone FROM Customer WHERE CustomerID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get Customer Email
+	public static String getCustomerEmail(String searchID) {
+		String query = "SELECT Email FROM Customer WHERE CustomerID = "+ searchID +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	
+	// ######### Queries for Client page #########
+
+	// Get the date since registered
+	public static String getCustomerRegisteredSince(String customerID) {
+		String query = "SELECT DateRegistered FROM Customer WHERE CustomerID = "+ Integer.parseInt(customerID) +";";
+		String r = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getString(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return r;
+	}
+	
+	// Get the num of complaint of a customer
+	public static String getCustomerComplaintsNum(String customerID) {
+		String query = "SELECT COUNT(ComplaintID) FROM Customer JOIN Complaint ON Customer.CustomerID = Complaint.CustomerID WHERE Customer.CustomerID = "+ Integer.parseInt(customerID) +";";
+		int r = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getInt(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return Integer.toString(r);
+	}
+
+	// Get the num of unpaid of a customer
+	public static String getCustomerUnpaidsNum(String customerID) {
+		String query = "SELECT COUNT(PaymentID) FROM Customer JOIN Payment ON Customer.CustomerID = Payment.CustomerID WHERE Customer.CustomerID = "+ Integer.parseInt(customerID) +" AND Payment.PaymentStatus = 'Unpaid';";
+		int r = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getInt(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return Integer.toString(r);
+	}
+	
+	// Get Customer Grade
+	public static String getCustomerGrade(String searchID) {
+		String query = "SELECT Grade FROM Customer WHERE CustomerID = "+ searchID +";";
+		int r = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				r = rs.getInt(1);
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return Integer.toString(r);
+	}
+	
+	//Verify customer exists
+		public static boolean customerExists(String customerID) {
+			String query = "SELECT COUNT(*) FROM Customer WHERE CustomerID = "+customerID+";";
+			int count = 0;
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(query);
+				
+				while(rs.next()) {
+					count = rs.getInt(1);
+				}
+				con.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			
+			if (count == 0) return false;
+			return true; 
+		}
+
 	
 	// ######### Queries for Account page #########
 	
 	// Get the full name of the employee
 	public static String getEmployeeFullName() {
-		String query = "SELECT FirstName FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String query = "SELECT FirstName FROM Employee WHERE Email = '"+ Login.accountUsername +"@email.com';";
 		String name = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -707,7 +1171,7 @@ public class SqlCon {
 	
 	// Get the birthday of the employee
 	public static String getEmployeeBirthday() {
-		String query = "SELECT DoB FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String query = "SELECT DoB FROM Employee WHERE Email = '"+ Login.accountUsername +"@email.com';";
 		String name = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -729,7 +1193,7 @@ public class SqlCon {
 	
 	// Get the position of the employee
 	public static String getEmployeePosition() {
-		String query = "SELECT Position FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String query = "SELECT Position FROM Employee WHERE Email = '"+ Login.accountUsername +"@email.com';";
 		String name = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -751,7 +1215,7 @@ public class SqlCon {
 	
 	// Get the phone number of the employee
 	public static String getEmployeePhone() {
-		String query = "SELECT Phone FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String query = "SELECT Phone FROM Employee WHERE Email = '"+ Login.accountUsername +"@email.com';";
 		String name = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -773,7 +1237,7 @@ public class SqlCon {
 	
 	// Get the email of the employee
 	public static String getEmployeeEmail() {
-		String query = "SELECT Email FROM Employee WHERE Email = '"+ Login.accountUsername +"';";
+		String query = "SELECT Email FROM Employee WHERE Email = '"+ Login.accountUsername +"@email.com';";
 		String name = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
