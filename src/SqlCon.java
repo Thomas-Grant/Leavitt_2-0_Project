@@ -1,8 +1,6 @@
 
 import java.sql.*;
 
-import javax.swing.JLabel; 
-
 public class SqlCon {
 	/*
 	public static void main(String[] args) {
@@ -24,7 +22,7 @@ public class SqlCon {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
 			Statement stmt = con.createStatement();
-			int rs = stmt.executeUpdate(query);
+			stmt.executeUpdate(query);
 			
 			con.close();
 		} catch (Exception e) {
@@ -1031,6 +1029,94 @@ public class SqlCon {
 		return r;
 	}
 	
+	// ######### Queries for Search page #########
+	
+	public static String [][] searchList(String cityVal, String rentPriceMinVal, String rentPriceMaxVal, String typeVal, String numRoomsVal, String numBathroomsVal){
+		
+		String [][] availableList = new String[0][];
+		
+		String query = "SELECT * FROM Housing ";
+		if(!cityVal.isEmpty()) {
+			query += "WHERE Address LIKE '%"+cityVal+"%' ";
+		}
+		if(!cityVal.isEmpty() && !rentPriceMinVal.isEmpty()) {
+			query += "AND RentPrice >= "+rentPriceMinVal+" ";
+		}
+		else if (!rentPriceMinVal.isEmpty()) {
+			query += "WHERE RentPrice >= "+rentPriceMinVal+" ";
+		}
+		if((!cityVal.isEmpty() || !rentPriceMinVal.isEmpty()) && !rentPriceMaxVal.isEmpty()) {
+			query += "AND RentPrice <= "+rentPriceMaxVal+" ";
+		}
+		else if (!rentPriceMaxVal.isEmpty()) {
+			query += "WHERE RentPrice <= "+rentPriceMaxVal+" ";
+		}
+		if((!cityVal.isEmpty() || !rentPriceMinVal.isEmpty() || !rentPriceMaxVal.isEmpty()) && !typeVal.isEmpty()) {
+			query += "AND RoomType = '"+typeVal+"' ";
+		}
+		else if (!typeVal.isEmpty()) {
+			query += "WHERE RoomType = '"+typeVal+"' ";
+		}
+		if((!cityVal.isEmpty() || !rentPriceMinVal.isEmpty() || !rentPriceMaxVal.isEmpty() || !typeVal.isEmpty()) && !numRoomsVal.isEmpty()) {
+			query += "AND NumOfRooms = "+numRoomsVal+" ";
+		}
+		else if (!numRoomsVal.isEmpty()) {
+			query += "WHERE NumOfRooms = "+numRoomsVal+" ";
+		}
+		if((!cityVal.isEmpty() || !rentPriceMinVal.isEmpty() || !rentPriceMaxVal.isEmpty() || !typeVal.isEmpty() || !numRoomsVal.isEmpty()) && !numBathroomsVal.isEmpty()) {
+			query += "AND NumOfBathrooms = "+numBathroomsVal+" ";
+		}
+		else if (!numBathroomsVal.isEmpty()) {
+			query += "WHERE NumOfBathrooms = "+numBathroomsVal+" ";
+		}
+		if(!cityVal.isEmpty() || !rentPriceMinVal.isEmpty() || !rentPriceMaxVal.isEmpty() || !typeVal.isEmpty() || !numRoomsVal.isEmpty() || !numBathroomsVal.isEmpty()) {
+			query += "AND Vacant = 'TRUE' ";
+		}
+		else{
+			query += "WHERE Vacant = 'TRUE' ";
+		}
+		
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			String queryCount = "SELECT COUNT(*) FROM ("+query+") T;";
+			Statement stmtCount = con.createStatement();
+			ResultSet rsCount = stmtCount.executeQuery(queryCount);
+			
+			int count = 0;
+			if(rsCount.next()) {
+				count = rsCount.getInt(1);
+			}
+			
+			availableList = new String[count][];
+			int i = 0;
+			
+			while(rs.next()) {
+				
+				String [] housingAvailable = new String[6];
+				
+				housingAvailable[0] = Integer.toString(rs.getInt(1));
+				housingAvailable[1] = rs.getString(2);
+				housingAvailable[2] = rs.getString(3);
+				housingAvailable[3] =Integer.toString(rs.getInt(4));
+				housingAvailable[4] =Integer.toString(rs.getInt(5));
+				housingAvailable[5] =Integer.toString(rs.getInt(6));
+				
+				availableList[i] = housingAvailable;
+				i++;
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return availableList;
+	}
 	
 	// ######### Queries for Client page #########
 
@@ -1257,6 +1343,142 @@ public class SqlCon {
 		return name;
 	}
 	
+	// ############## Search For Unpaid Page ###################
+public static String [][] searchListUnpaid(){
+		
+		String [][] availableList = new String[0][];
+		
+		String query = "SELECT CustomerID, Customer_Name AS 'Customer Name', COUNT(*) AS 'Number of Unpaid', Deadline FROM (SELECT Customer.CustomerID, CONCAT(FirstName, ' ', LastName) AS 'Customer_Name', Deadline FROM Customer JOIN Payment ON Customer.CustomerID = Payment.CustomerID WHERE Payment.PaymentStatus = 'Unpaid' ORDER BY Deadline DESC) T GROUP BY CustomerID";
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+			
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			String queryCount = "SELECT COUNT(*) FROM ("+query+") T;";
+			Statement stmtCount = con.createStatement();
+			ResultSet rsCount = stmtCount.executeQuery(queryCount);
+			
+			int count = 0;
+			if(rsCount.next()) {
+				count = rsCount.getInt(1);
+			}
+			
+			availableList = new String[count][];
+			int i = 0;
+			
+			while(rs.next()) {
+				
+				String [] housingAvailable = new String[4];
+				
+				housingAvailable[0] = Integer.toString(rs.getInt(1));
+				housingAvailable[1] = rs.getString(2);
+				housingAvailable[2] = Integer.toString(rs.getInt(3));
+				housingAvailable[3] = rs.getString(4);
+				
+				availableList[i] = housingAvailable;
+				i++;
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return availableList;
+	}
+
+// ############## Search For Contract Page ###################
+public static String [][] searchListContract(){
+	
+	String [][] availableList = new String[0][];
+	
+	String query = "SELECT CustomerID, Customer_Name AS 'Customer Name', ContractID, EndDate FROM (SELECT Customer.CustomerID, CONCAT(FirstName, ' ', LastName) AS 'Customer_Name', ContractID, EndDate FROM Customer JOIN Contract ON Customer.CustomerID = Contract.CustomerID WHERE EndDate > current_date() AND date_add(current_date(), INTERVAL 14 DAY) > EndDate ORDER BY Customer.customerID) T";
+	
+	try {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+		
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		
+		String queryCount = "SELECT COUNT(*) FROM ("+query+") T;";
+		Statement stmtCount = con.createStatement();
+		ResultSet rsCount = stmtCount.executeQuery(queryCount);
+		
+		int count = 0;
+		if(rsCount.next()) {
+			count = rsCount.getInt(1);
+		}
+		
+		availableList = new String[count][];
+		int i = 0;
+		
+		while(rs.next()) {
+			
+			String [] housingAvailable = new String[4];
+			
+			housingAvailable[0] = Integer.toString(rs.getInt(1));
+			housingAvailable[1] = rs.getString(2);
+			housingAvailable[2] = Integer.toString(rs.getInt(3));
+			housingAvailable[3] = rs.getString(4);
+			
+			availableList[i] = housingAvailable;
+			i++;
+		}
+	
+		con.close();
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+	return availableList;
+}
+
+// ############## Search For Maintenance Page ###################
+public static String [][] searchListMaintenance(){
+	
+	String [][] availableList = new String[0][];
+	
+	String query = "SELECT HousingID, MaintenanceID, Reason FROM Maintenance WHERE MaintenanceStatus = 'Open'";
+	
+	try {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/leavitt_3100", "root", "DataFor2.0");
+		
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		
+		String queryCount = "SELECT COUNT(*) FROM ("+query+") T;";
+		Statement stmtCount = con.createStatement();
+		ResultSet rsCount = stmtCount.executeQuery(queryCount);
+		
+		int count = 0;
+		if(rsCount.next()) {
+			count = rsCount.getInt(1);
+		}
+		
+		availableList = new String[count][];
+		int i = 0;
+		
+		while(rs.next()) {
+			
+			String [] housingAvailable = new String[3];
+			
+			housingAvailable[0] = Integer.toString(rs.getInt(1));
+			housingAvailable[1] = Integer.toString(rs.getInt(2));
+			housingAvailable[2] = rs.getString(3);
+			
+			availableList[i] = housingAvailable;
+			i++;
+		}
+	
+		con.close();
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+	return availableList;
+}
 }
 
 

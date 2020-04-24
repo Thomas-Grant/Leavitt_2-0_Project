@@ -3,7 +3,6 @@
  */
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -15,14 +14,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
 import java.awt.SystemColor;
 
@@ -98,6 +94,7 @@ public class LeavittApp {
 	
 	//Search
 	static JButton goButton;
+	static CreateTable table;
 	
 	//Client
 	static JButton goClientButton;
@@ -134,6 +131,7 @@ public class LeavittApp {
 	private static JLabel denied; // Acount page
 	private static JLabel failure; // Admin page
 	private static JLabel notFound; // Client Page
+	private static JLabel invalidInput; //Search Page
 	private static int alpha = 255;
 	private static int increment = -5;
 	
@@ -1574,7 +1572,7 @@ public class LeavittApp {
 		numberAvailableLabel.setOpaque(true);
       	contentPanel.add(numberAvailableLabel);
 		
-		JLabel numberAvailableVal = new JLabel("9");
+		JLabel numberAvailableVal = new JLabel(Integer.toString(SqlCon.getCountAvailaibleHousing()));
 		numberAvailableVal.setHorizontalAlignment(SwingConstants.CENTER);
 		numberAvailableVal.setFont(new Font("Dubai Medium", Font.BOLD, 24));
 		numberAvailableVal.setBackground(SystemColor.info);
@@ -1704,6 +1702,18 @@ public class LeavittApp {
 		numBathroomsVal.setOpaque(true);
 		contentPanel.add(numBathroomsVal);
 		
+		invalidInput = new JLabel("");
+		invalidInput.setBounds(910, 115, 80, 30);
+		invalidInput.setForeground(new Color(255,0,0));
+		contentPanel.add(invalidInput);
+		
+		String [] columnNames = {"Housing ID", "Address", "Housing Type", "Rent Price", "Num of Rooms", "Num of Bathrooms"};
+		String [][] data = SqlCon.searchList(cityVal.getText(), rentPriceMinVal.getText(), rentPriceMaxVal.getText(), typeVal.getText(), numRoomsVal.getText(), numBathroomsVal.getText());
+		table = new CreateTable(data, columnNames);
+		table.setBounds(30, 150, 940, 450);
+		table.setVisible(true);
+		contentPanel.add(table);
+
 		goButton = new JButton("GO");
 		goButton.setFont(new Font("Dubai Medium", Font.BOLD, 22));
 		goButton.setBackground(SystemColor.activeCaption);
@@ -1712,16 +1722,65 @@ public class LeavittApp {
 		goButton.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPanel.add(goButton);
 		
+		
 		goButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//try query, if error, display flash message "wrong input"
 				// otherwise, add successful, clear the textfields
-				// displaySearchAvailable();
+
+				String [] columnNames = {"Housing ID", "Address", "Housing Type", "Rent Price", "Num of Rooms", "Num of Bathrooms"};
+				String [][] data = SqlCon.searchList(cityVal.getText(), rentPriceMinVal.getText(), rentPriceMaxVal.getText(), typeVal.getText(), numRoomsVal.getText(), numBathroomsVal.getText());
+
+				if(data.length != 0) {
+					
+					invalidInput.setText(" ");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	invalidInput.setText("");
+					        }
+					        invalidInput.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+					
+					contentPanel.remove(table);
+					table = new CreateTable(data, columnNames);
+					table.setBounds(30, 150, 940, 450);
+					table.setVisible(true);
+					contentPanel.add(table);
+				}
+				else {
+					invalidInput.setText("invalid input");
+					new Timer(100, new ActionListener() {
+						 public void actionPerformed(ActionEvent e) {
+					        alpha += increment;
+					        if (alpha <= 0) {
+					        	alpha = 0;
+					        	invalidInput.setText("");
+					        }
+					        invalidInput.setForeground(new Color(255, 0, 0, alpha));
+						 }
+					}).start();
+					alpha = 255;
+
+					contentPanel.remove(table);
+					
+					String [][] data2 = SqlCon.searchList("","","","","","");
+					table = new CreateTable(data2, columnNames);
+					table.setBounds(30, 150, 940, 450);
+					table.setVisible(true);
+					contentPanel.add(table);
+				}
+
 				frame.repaint();
-			}
+			}		
 		});
 		
-		}
+	}
+	
 	
 	private void clientPage() {
 		contentPanel.removeAll();
@@ -2185,7 +2244,7 @@ public class LeavittApp {
 		unpaidCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPanel.add(unpaidCountLabel);
 		
-		JLabel unpaidCountVal = new JLabel("5");
+		JLabel unpaidCountVal = new JLabel(Integer.toString(SqlCon.getCountUnpaidRent()));
 		unpaidCountVal.setHorizontalAlignment(SwingConstants.CENTER);
 		unpaidCountVal.setFont(new Font("Dubai Medium", Font.BOLD, 30));
 		unpaidCountVal.setBackground(SystemColor.info);
@@ -2194,6 +2253,31 @@ public class LeavittApp {
 		unpaidCountVal.setOpaque(true);
 		unpaidCountVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPanel.add(unpaidCountVal);
+		
+		denied = new JLabel("");
+		denied.setBounds(400, 600, 110, 50);
+		denied.setForeground(new Color(255,0,0));
+		contentPanel.add(denied);
+		
+		denied.setText(" ");
+		new Timer(100, new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+			        alpha += increment;
+			        if (alpha <= 0) {
+			        	alpha = 0;
+			          denied.setText("");
+			        }
+			        denied.setForeground(new Color(255, 0, 0, alpha));
+			      }
+			    }).start();
+			alpha = 255;
+		
+		String [] columnNames = {"Customer ID", "Customer Name", "Number of unpaid", "Deadline"};
+		String [][] data = SqlCon.searchListUnpaid();
+		table = new CreateTable(data, columnNames);
+		table.setBounds(30, 150, 940, 450);
+		table.setVisible(true);
+		contentPanel.add(table);
 	}
 	
 	private void contractPage() {
@@ -2210,7 +2294,7 @@ public class LeavittApp {
 		contractCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPanel.add(contractCountLabel);
 		
-		JLabel contractCountVal = new JLabel("3");
+		JLabel contractCountVal = new JLabel(Integer.toString(SqlCon.getCountExpiringSoon()));
 		contractCountVal.setHorizontalAlignment(SwingConstants.CENTER);
 		contractCountVal.setFont(new Font("Dubai Medium", Font.BOLD, 30));
 		contractCountVal.setBackground(SystemColor.info);
@@ -2219,6 +2303,32 @@ public class LeavittApp {
 		contractCountVal.setOpaque(true);
 		contractCountVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPanel.add(contractCountVal);
+		
+		denied = new JLabel("");
+		denied.setBounds(400, 600, 110, 50);
+		denied.setForeground(new Color(255,0,0));
+		contentPanel.add(denied);
+		
+		denied.setText(" ");
+		new Timer(100, new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+			        alpha += increment;
+			        if (alpha <= 0) {
+			        	alpha = 0;
+			          denied.setText("");
+			        }
+			        denied.setForeground(new Color(255, 0, 0, alpha));
+			      }
+			    }).start();
+			alpha = 255;
+		
+		String [] columnNames = {"Customer ID", "Customer Name", "ContractID", "End Date"};
+		String [][] data = SqlCon.searchListContract();
+		table = new CreateTable(data, columnNames);
+		table.setBounds(30, 150, 940, 450);
+		table.setVisible(true);
+		contentPanel.add(table);
+		
 	}
 	
 	private void maintenancePage() {
@@ -2235,7 +2345,7 @@ public class LeavittApp {
 		maintenanceCountLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPanel.add(maintenanceCountLabel);
 		
-		JLabel maintenanceCountVal = new JLabel("8");
+		JLabel maintenanceCountVal = new JLabel(Integer.toString(SqlCon.getCountOnGoingMaintenance()));
 		maintenanceCountVal.setHorizontalAlignment(SwingConstants.CENTER);
 		maintenanceCountVal.setFont(new Font("Dubai Medium", Font.BOLD, 30));
 		maintenanceCountVal.setBackground(SystemColor.info);
@@ -2244,6 +2354,31 @@ public class LeavittApp {
 		maintenanceCountVal.setOpaque(true);
 		maintenanceCountVal.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		contentPanel.add(maintenanceCountVal);
+		
+		denied = new JLabel("");
+		denied.setBounds(400, 600, 110, 50);
+		denied.setForeground(new Color(255,0,0));
+		contentPanel.add(denied);
+		
+		denied.setText(" ");
+		new Timer(100, new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+			        alpha += increment;
+			        if (alpha <= 0) {
+			        	alpha = 0;
+			          denied.setText("");
+			        }
+			        denied.setForeground(new Color(255, 0, 0, alpha));
+			      }
+			    }).start();
+			alpha = 255;
+		
+		String [] columnNames = {"House ID", "Maintenance ID", "Reason"};
+		String [][] data = SqlCon.searchListMaintenance();
+		table = new CreateTable(data, columnNames);
+		table.setBounds(30, 150, 940, 450);
+		table.setVisible(true);
+		contentPanel.add(table);
 	}
 	
 	//Reset Color Admin
